@@ -13,4 +13,9 @@ public class HealthCheckController {
     public String healthCheck() {
         return "ResQNet Backend is running! 🚀";
     }
+
+    @GetMapping("/protected")
+    public String protectedRoute() {
+        return "You are authenticated!";
+    }
 }
