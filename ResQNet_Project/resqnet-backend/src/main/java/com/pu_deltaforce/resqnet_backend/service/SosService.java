@@ -21,6 +21,7 @@ public class SosService {
     private final SosAlertRepository sosRepository;
     private final AmbulanceRepository ambulanceRepository;
     private final SafeZoneRepository safeZoneRepository;
+    private final WebSocketService webSocketService;
 
     public SosResponse triggerSos(SosRequest request) {
 
@@ -32,6 +33,7 @@ public class SosService {
         sos.setLongitude(request.getLongitude());
         sos.setMessage(request.getMessage());
         SosAlert saved = sosRepository.save(sos);
+        webSocketService.broadcastSosAlert(saved);
 
         // Find the nearest ambulance
         List<Ambulance> ambulances = ambulanceRepository

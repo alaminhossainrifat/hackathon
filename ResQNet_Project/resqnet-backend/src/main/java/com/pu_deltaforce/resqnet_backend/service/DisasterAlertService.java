@@ -14,6 +14,7 @@ import java.util.List;
 public class DisasterAlertService {
 
     private final DisasterAlertRepository repository;
+    private final WebSocketService webSocketService;
 
     public DisasterAlert createAlert(DisasterAlertRequest request) {
         DisasterAlert alert = new DisasterAlert();
@@ -24,7 +25,10 @@ public class DisasterAlertService {
         alert.setLocation(request.getLocation());
         alert.setLatitude(request.getLatitude());
         alert.setLongitude(request.getLongitude());
-        return repository.save(alert);
+//        return repository.save(alert);
+        DisasterAlert saved = repository.save(alert);
+        webSocketService.broadcastDisasterAlert(saved);
+        return saved;
     }
 
     public List<DisasterAlert> getAllActiveAlerts() {
