@@ -1,0 +1,19 @@
+<div class="dashboard">
+  <nav class="navbar">
+    <div class="brand">🚨 ResQNet</div>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </nav>
+
+  <div class="content">
+    <h1>Welcome to ResQNet</h1>
+    <p class="sub">Disaster Response Network — Select a module</p>
+
+    <div class="grid">
+      <a *ngFor="let item of menuItems"
+         [routerLink]="item.route"
+         class="card">
+        {{ item.label }}
+      </a>
+    </div>
+  </div>
+</div>

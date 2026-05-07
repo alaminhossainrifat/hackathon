@@ -11,13 +11,13 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   register(data: { name: string; email: string; password: string; phone: string }) {
-    return this.http.post(`${this.apiUrl}/register`, data);
-  }
+  return this.http.post(`${this.apiUrl}/register`, data, { responseType: 'text' });
+}
 
   login(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password })
-      .pipe(tap(res => localStorage.setItem('token', res.token)));
-  }
+  return this.http.post(`${this.apiUrl}/login`, { email, password }, { responseType: 'text' })
+    .pipe(tap(res => localStorage.setItem('token', res)));
+}
 
   logout() {
     localStorage.removeItem('token');
