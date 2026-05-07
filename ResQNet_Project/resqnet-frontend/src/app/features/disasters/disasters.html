@@ -1,0 +1,75 @@
+<div class="page">
+  <div class="header">
+    <h2>🚨 Disaster Alerts</h2>
+    <div class="actions">
+      <button (click)="showForm = !showForm" class="btn-add">+ New Alert</button>
+      <a routerLink="/dashboard" class="back-btn">← Back</a>
+    </div>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <div class="form-card" *ngIf="showForm">
+    <h3>Create Alert</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Title</label>
+        <input [(ngModel)]="newDisaster.title" placeholder="Alert title" />
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input [(ngModel)]="newDisaster.location" placeholder="Location" />
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select [(ngModel)]="newDisaster.alertType">
+          <option *ngFor="let t of alertTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Severity</label>
+        <select [(ngModel)]="newDisaster.severity">
+          <option *ngFor="let s of severities" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Latitude</label>
+        <input type="number" [(ngModel)]="newDisaster.latitude" />
+      </div>
+      <div class="form-group">
+        <label>Longitude</label>
+        <input type="number" [(ngModel)]="newDisaster.longitude" />
+      </div>
+      <div class="form-group full">
+        <label>Description</label>
+        <textarea [(ngModel)]="newDisaster.description" rows="3" placeholder="Description"></textarea>
+      </div>
+    </div>
+    <button (click)="createDisaster()" class="btn-submit">Create Alert</button>
+    <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading...</div>
+
+  <div class="card-grid" *ngIf="!loading">
+    <div class="disaster-card" *ngFor="let d of disasters">
+      <div class="card-top">
+        <span class="type-badge">{{ d.alertType }}</span>
+        <span class="severity-badge" [ngClass]="getSeverityClass(d.severity)">{{ d.severity }}</span>
+      </div>
+      <h3>{{ d.title }}</h3>
+      <p class="location">📍 {{ d.location }}</p>
+      <p class="desc">{{ d.description }}</p>
+      <div class="card-footer">
+        <span class="status" [class.active]="d.active">{{ d.active ? '🟢 Active' : '🔴 Inactive' }}</span>
+        <button (click)="toggle(d)" class="btn-toggle">
+          {{ d.active ? 'Deactivate' : 'Activate' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty" *ngIf="!loading && disasters.length === 0">
+    No alerts found. Create one!
+  </div>
+</div>
