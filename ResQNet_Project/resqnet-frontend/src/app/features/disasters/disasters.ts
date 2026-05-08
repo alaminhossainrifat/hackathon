@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -30,7 +30,10 @@ export class DisastersComponent implements OnInit {
   alertTypes = ['FLOOD', 'CYCLONE', 'EARTHQUAKE', 'FIRE', 'OTHER'];
   severities = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
 
-  constructor(private disasterService: DisasterService) { }
+  constructor(
+    private disasterService: DisasterService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() { this.loadDisasters(); }
 
@@ -38,15 +41,14 @@ export class DisastersComponent implements OnInit {
     this.loading = true;
     this.disasterService.getAll().subscribe({
       next: (data) => {
-        console.log('DATA:', data);
-        this.disasters = data;
-        console.log('length:', this.disasters.length);
+        this.disasters = [...data];
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.log('ERROR:', err);
         this.error = 'Failed to load';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -67,9 +69,7 @@ export class DisastersComponent implements OnInit {
       ? this.disasterService.deactivate(disaster.id!)
       : this.disasterService.activate(disaster.id!);
     action.subscribe(() => this.loadDisasters());
-
   }
-
 
   resetForm() {
     this.newDisaster = {
@@ -86,6 +86,4 @@ export class DisastersComponent implements OnInit {
       'CRITICAL': 'badge-critical'
     }[severity] || '';
   }
-
-
 }
