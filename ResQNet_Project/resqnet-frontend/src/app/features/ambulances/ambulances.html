@@ -1,1 +1,70 @@
-<p>ambulances works!</p>
+<div class="page">
+    <div class="header">
+        <h2>🚑 Ambulances</h2>
+        <div class="actions">
+            <button (click)="showForm = !showForm" class="btn-add">+ Add Ambulance</button>
+            <a routerLink="/dashboard" class="back-btn">← Back</a>
+        </div>
+    </div>
+
+    <div class="search-bar">
+        <input [(ngModel)]="searchArea" placeholder="Search by area..." />
+        <button (click)="search()">Search</button>
+        <button (click)="searchArea=''; load()" class="btn-clear">Clear</button>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="form-card" *ngIf="showForm">
+        <h3>Add Ambulance</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Vehicle Number</label>
+                <input [(ngModel)]="newAmbulance.vehicleNumber" placeholder="DHA-1234" />
+            </div>
+            <div class="form-group">
+                <label>Driver Name</label>
+                <input [(ngModel)]="newAmbulance.driverName" placeholder="Driver name" />
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input [(ngModel)]="newAmbulance.driverPhone" placeholder="01XXXXXXXXX" />
+            </div>
+            <div class="form-group">
+                <label>Area</label>
+                <input [(ngModel)]="newAmbulance.area" placeholder="e.g. Mirpur" />
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select [(ngModel)]="newAmbulance.status">
+                    <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+                </select>
+            </div>
+        </div>
+        <button (click)="create()" class="btn-submit">Add Ambulance</button>
+        <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+    </div>
+
+    <div class="loading" *ngIf="loading">Loading...</div>
+
+    <div class="card-grid" *ngIf="!loading">
+        <div class="ambulance-card" *ngFor="let a of ambulances">
+            <div class="card-top">
+                <span class="vehicle">🚑 {{ a.vehicleNumber }}</span>
+                <span class="status-badge" [ngClass]="getStatusClass(a.status)">{{ a.status }}</span>
+            </div>
+            <h3>{{ a.driverName }}</h3>
+            <p class="area">📍 {{ a.area }}</p>
+            <p class="phone">📞 {{ a.driverPhone }}</p>
+            <div class="status-actions">
+                <select (change)="updateStatus(a, $any($event.target).value)" [value]="a.status">
+                    <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && ambulances.length === 0">
+        No ambulances found.
+    </div>
+</div>

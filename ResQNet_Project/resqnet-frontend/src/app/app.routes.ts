@@ -7,6 +7,9 @@ import { MapComponent } from './features/map/map';
 import { DisastersComponent } from './features/disasters/disasters';
 import { SafezonesComponent } from './features/safezones/safezones';
 import { DoctorsComponent } from './features/doctors/doctors';
+import { AmbulancesComponent } from './features/ambulances/ambulances';
+import { BloodBankComponent } from './features/blood-bank/blood-bank';
+
 
 
 export const routes: Routes = [
@@ -18,4 +21,6 @@ export const routes: Routes = [
   { path: 'disasters', component: DisastersComponent, canActivate: [authGuard] },
   { path: 'safezones', component: SafezonesComponent, canActivate: [authGuard] },
   { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
+  { path: 'ambulances', component: AmbulancesComponent, canActivate: [authGuard] },
+  { path: 'blood-bank', component: BloodBankComponent, canActivate: [authGuard] },
 ];

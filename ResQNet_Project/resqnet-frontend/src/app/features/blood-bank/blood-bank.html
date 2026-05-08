@@ -1,1 +1,68 @@
-<p>blood-bank works!</p>
+<div class="page">
+    <div class="header">
+        <h2>🩸 Blood Bank</h2>
+        <div class="actions">
+            <button (click)="showForm = !showForm" class="btn-add">+ Register Donor</button>
+            <a routerLink="/dashboard" class="back-btn">← Back</a>
+        </div>
+    </div>
+
+    <div class="search-bar">
+        <select [(ngModel)]="searchGroup">
+            <option *ngFor="let g of bloodGroups" [value]="g">{{ formatGroup(g) }}</option>
+        </select>
+        <input [(ngModel)]="searchArea" placeholder="Filter by area (optional)" />
+        <button (click)="search()">Search</button>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="form-card" *ngIf="showForm">
+        <h3>Register Donor</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Name</label>
+                <input [(ngModel)]="newDonor.donorName" placeholder="Full name" />
+            </div>
+            <div class="form-group">
+                <label>Blood Group</label>
+                <select [(ngModel)]="newDonor.bloodGroup">
+                    <option *ngFor="let g of bloodGroups" [value]="g">{{ formatGroup(g) }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Area</label>
+                <input [(ngModel)]="newDonor.area" placeholder="e.g. Mirpur" />
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input [(ngModel)]="newDonor.phone" placeholder="01XXXXXXXXX" />
+            </div>
+        </div>
+        <button (click)="create()" class="btn-submit">Register</button>
+        <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+    </div>
+
+    <div class="loading" *ngIf="loading">Loading...</div>
+
+    <div class="card-grid" *ngIf="!loading">
+        <div class="donor-card" *ngFor="let d of donors">
+            <div class="blood-badge">{{ formatGroup(d.bloodGroup) }}</div>
+            <h3>{{ d.donorName }}</h3>
+            <p class="area">📍 {{ d.area }}</p>
+            <p class="phone">📞 {{ d.phone }}</p>
+            <div class="card-footer">
+                <span class="status" [class.active]="d.available">
+                    {{ d.available ? '🟢 Available' : '🔴 Unavailable' }}
+                </span>
+                <button (click)="toggle(d)" class="btn-toggle">
+                    {{ d.available ? 'Mark Unavailable' : 'Mark Available' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && donors.length === 0">
+        No donors found for this blood group.
+    </div>
+</div>
