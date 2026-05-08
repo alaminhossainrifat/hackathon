@@ -1,0 +1,71 @@
+<div class="page">
+  <div class="header">
+    <h2>👨‍⚕️ Doctors</h2>
+    <div class="actions">
+      <button (click)="showForm = !showForm" class="btn-add">+ Add Doctor</button>
+      <a routerLink="/dashboard" class="back-btn">← Back</a>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input [(ngModel)]="searchArea" placeholder="Search by area..." />
+    <button (click)="search()">Search</button>
+    <button (click)="searchArea=''; load()" class="btn-clear">Clear</button>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <div class="form-card" *ngIf="showForm">
+    <h3>Add Doctor</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Name</label>
+        <input [(ngModel)]="newDoctor.name" placeholder="Dr. Name" />
+      </div>
+      <div class="form-group">
+        <label>Specialization</label>
+        <input [(ngModel)]="newDoctor.specialization" placeholder="e.g. Cardiology" />
+      </div>
+      <div class="form-group">
+        <label>Area</label>
+        <input [(ngModel)]="newDoctor.area" placeholder="e.g. Dhaka" />
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input [(ngModel)]="newDoctor.phone" placeholder="01XXXXXXXXX" />
+      </div>
+      <div class="form-group">
+        <label>Consult Type</label>
+        <select [(ngModel)]="newDoctor.consultType">
+          <option *ngFor="let t of consultTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+    </div>
+    <button (click)="create()" class="btn-submit">Add Doctor</button>
+    <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading...</div>
+
+  <div class="card-grid" *ngIf="!loading">
+    <div class="doctor-card" *ngFor="let d of doctors">
+      <div class="card-top">
+        <span class="consult-badge">{{ d.consultType }}</span>
+        <span class="status" [class.active]="d.available">
+          {{ d.available ? '🟢 Available' : '🔴 Unavailable' }}
+        </span>
+      </div>
+      <h3>{{ d.name }}</h3>
+      <p class="spec">🩺 {{ d.specialization }}</p>
+      <p class="area">📍 {{ d.area }}</p>
+      <p class="phone">📞 {{ d.phone }}</p>
+      <button (click)="toggle(d)" class="btn-toggle">
+        {{ d.available ? 'Mark Unavailable' : 'Mark Available' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="empty" *ngIf="!loading && doctors.length === 0">
+    No doctors found.
+  </div>
+</div>

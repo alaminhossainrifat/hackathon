@@ -6,6 +6,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { MapComponent } from './features/map/map';
 import { DisastersComponent } from './features/disasters/disasters';
 import { SafezonesComponent } from './features/safezones/safezones';
+import { DoctorsComponent } from './features/doctors/doctors';
 
 
 export const routes: Routes = [
@@ -16,4 +17,5 @@ export const routes: Routes = [
   { path: 'map', component: MapComponent, canActivate: [authGuard] },
   { path: 'disasters', component: DisastersComponent, canActivate: [authGuard] },
   { path: 'safezones', component: SafezonesComponent, canActivate: [authGuard] },
+  { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
 ];
