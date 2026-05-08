@@ -1,0 +1,90 @@
+<div class="page">
+  <div class="header">
+    <h2>🔍 Missing Persons</h2>
+    <div class="actions">
+      <button (click)="showForm = !showForm" class="btn-add">+ Report Missing</button>
+      <a routerLink="/dashboard" class="back-btn">← Back</a>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <select [(ngModel)]="searchType">
+      <option value="name">By Name</option>
+      <option value="location">By Location</option>
+    </select>
+    <input [(ngModel)]="searchQuery" placeholder="Search..." />
+    <button (click)="search()">Search</button>
+    <button (click)="searchQuery=''; load()" class="btn-clear">Clear</button>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <div class="form-card" *ngIf="showForm">
+    <h3>Report Missing Person</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Name</label>
+        <input [(ngModel)]="newPerson.name" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" [(ngModel)]="newPerson.age" />
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select [(ngModel)]="newPerson.gender">
+          <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Last Seen Location</label>
+        <input [(ngModel)]="newPerson.lastSeenLocation" placeholder="Location" />
+      </div>
+      <div class="form-group">
+        <label>Contact Name</label>
+        <input [(ngModel)]="newPerson.reporterName" placeholder="Your name" />
+      </div>
+      <div class="form-group">
+        <label>Contact Phone</label>
+        <input [(ngModel)]="newPerson.reporterPhone" placeholder="01XXXXXXXXX" />
+      </div>
+      <div class="form-group full">
+        <label>Description</label>
+        <textarea [(ngModel)]="newPerson.description" rows="3"
+          placeholder="Physical description, clothing, etc."></textarea>
+      </div>
+    </div>
+    <button (click)="create()" class="btn-submit">Submit Report</button>
+    <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading...</div>
+
+  <div class="card-grid" *ngIf="!loading">
+    <div class="person-card" *ngFor="let p of persons"
+         [class.found]="p.status === 'FOUND'">
+      <div class="card-top">
+        <span class="gender-badge">{{ p.gender }}</span>
+        <span class="status-badge" [class.found]="p.status === 'FOUND'">
+          {{ p.status === 'FOUND' ? '✅ Found' : '🔴 Missing' }}
+        </span>
+      </div>
+      <h3>{{ p.name }}</h3>
+      <p class="age">Age: {{ p.age }}</p>
+      <p class="location">📍 Last seen: {{ p.lastSeenLocation }}</p>
+      <p class="desc">{{ p.description }}</p>
+      <div class="contact">
+        <p>👤 {{ p.reporterName }}</p>
+        <p>📞 {{ p.reporterPhone }}</p>
+      </div>
+      <button *ngIf="p.status === 'MISSING'"
+              (click)="markFound(p)" class="btn-found">
+        ✅ Mark as Found
+      </button>
+    </div>
+  </div>
+
+  <div class="empty" *ngIf="!loading && persons.length === 0">
+    No missing persons reported.
+  </div>
+</div>
