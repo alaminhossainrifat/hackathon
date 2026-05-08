@@ -1,0 +1,86 @@
+<div class="page">
+  <div class="header">
+    <h2>🏠 Safe Zones</h2>
+    <div class="actions">
+      <button (click)="showForm = !showForm" class="btn-add">+ Add Zone</button>
+      <a routerLink="/dashboard" class="back-btn">← Back</a>
+    </div>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <div class="form-card" *ngIf="showForm">
+    <h3>Add Safe Zone</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Name</label>
+        <input [(ngModel)]="newZone.name" placeholder="Zone name" />
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select [(ngModel)]="newZone.zoneType">
+          <option *ngFor="let t of zoneTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Address</label>
+        <input [(ngModel)]="newZone.address" placeholder="Full address" />
+      </div>
+      <div class="form-group">
+        <label>Capacity</label>
+        <input type="number" [(ngModel)]="newZone.capacity" />
+      </div>
+      <div class="form-group">
+        <label>Contact</label>
+        <input [(ngModel)]="newZone.contactNumber" placeholder="Phone number" />
+      </div>
+      <div class="form-group">
+        <label>Latitude</label>
+        <input type="number" [(ngModel)]="newZone.latitude" />
+      </div>
+      <div class="form-group">
+        <label>Longitude</label>
+        <input type="number" [(ngModel)]="newZone.longitude" />
+      </div>
+    </div>
+    <button (click)="create()" class="btn-submit">Add Zone</button>
+    <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading...</div>
+
+  <div class="card-grid" *ngIf="!loading">
+    <div class="zone-card" *ngFor="let z of safezones">
+      <div class="card-top">
+        <span class="type-badge">{{ z.zoneType }}</span>
+        <span class="status" [class.active]="z.available">
+          {{ z.available ? '🟢 Available' : '🔴 Unavailable' }}
+        </span>
+      </div>
+      <h3>{{ z.name }}</h3>
+      <p class="address">📍 {{ z.address }}</p>
+      <p class="contact">📞 {{ z.contactNumber }}</p>
+
+      <div class="occupancy">
+        <div class="occ-label">
+          <span>Occupancy</span>
+          <span>{{ z.currentOccupancy }}/{{ z.capacity }}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"
+               [style.width.%]="getOccupancyPercent(z)"
+               [class.full]="getOccupancyPercent(z) >= 90">
+          </div>
+        </div>
+      </div>
+
+      <button (click)="toggle(z)" class="btn-toggle">
+        {{ z.available ? 'Mark Unavailable' : 'Mark Available' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="empty" *ngIf="!loading && safezones.length === 0">
+    No safe zones found. Add one!
+  </div>
+</div>
