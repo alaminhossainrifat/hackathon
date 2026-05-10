@@ -20,7 +20,8 @@ export class AmbulancesComponent implements OnInit {
 
   newAmbulance: Ambulance = {
     vehicleNumber: '', driverName: '',
-    driverPhone: '', area: '', status: 'AVAILABLE'
+    driverPhone: '', area: '', status: 'AVAILABLE',
+    currentLatitude: 0, currentLongitude: 0
   };
 
   statuses = ['AVAILABLE', 'ON_DUTY', 'MAINTENANCE'];
@@ -77,7 +78,11 @@ export class AmbulancesComponent implements OnInit {
   }
 
   resetForm() {
-    this.newAmbulance = { vehicleNumber: '', driverName: '', driverPhone: '', area: '', status: 'AVAILABLE' };
+    this.newAmbulance = {
+      vehicleNumber: '', driverName: '',
+      driverPhone: '', area: '', status: 'AVAILABLE',
+      currentLatitude: 0, currentLongitude: 0
+    };
   }
 
   getStatusClass(status: string) {
