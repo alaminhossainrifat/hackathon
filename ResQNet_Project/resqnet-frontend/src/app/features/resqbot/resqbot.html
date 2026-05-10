@@ -1,0 +1,52 @@
+<div class="page">
+  <div class="header">
+    <h2>🤖 ResQBot</h2>
+    <a routerLink="/dashboard" class="back-btn">← Back</a>
+  </div>
+
+  <!-- Provider Config -->
+  <div class="config-bar">
+    <select [(ngModel)]="provider">
+      <option value="freellm">FreeLLM (Free)</option>
+      <option value="gemini">Gemini</option>
+      <option value="openai">OpenAI</option>
+      <option value="claude">Claude</option>
+    </select>
+    <input [(ngModel)]="apiKey" type="password" placeholder="API Key দিন..." />
+    <button (click)="saveConfig()" class="btn-save">💾 Save</button>
+  </div>
+
+  <div class="config-status" *ngIf="configSaved">
+    ✅ Config saved!
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-box" #chatBox>
+      <div class="message" *ngFor="let m of messages" [class.user]="m.role === 'user'"
+        [class.assistant]="m.role === 'assistant'">
+        <div class="bubble">
+          <span class="role-icon">{{ m.role === 'user' ? '👤' : '🤖' }}</span>
+          <p>{{ m.content }}</p>
+        </div>
+      </div>
+
+      <div class="message assistant" *ngIf="loading">
+        <div class="bubble">
+          <span class="role-icon">🤖</span>
+          <p class="typing">টাইপ করছে...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="input-area">
+      <textarea [(ngModel)]="userInput" (keydown)="onEnter($event)" placeholder="আপনার প্রশ্ন লিখুন... (Enter = Send)"
+        rows="2">
+      </textarea>
+      <button (click)="sendMessage()" [disabled]="loading || !userInput.trim()">
+        {{ loading ? '...' : '➤' }}
+      </button>
+    </div>
+  </div>
+</div>
