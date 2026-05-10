@@ -11,8 +11,7 @@ import { AmbulancesComponent } from './features/ambulances/ambulances';
 import { BloodBankComponent } from './features/blood-bank/blood-bank';
 import { MissingPersonsComponent } from './features/missing-persons/missing-persons';
 import { CivicReportsComponent } from './features/civic-reports/civic-reports';
-
-
+import { SosComponent } from './features/sos/sos';
 
 
 export const routes: Routes = [
@@ -28,4 +27,5 @@ export const routes: Routes = [
   { path: 'blood-bank', component: BloodBankComponent, canActivate: [authGuard] },
   { path: 'missing-persons', component: MissingPersonsComponent, canActivate: [authGuard] },
   { path: 'civic-reports', component: CivicReportsComponent, canActivate: [authGuard] },
+  { path: 'sos', component: SosComponent, canActivate: [authGuard] },
 ];

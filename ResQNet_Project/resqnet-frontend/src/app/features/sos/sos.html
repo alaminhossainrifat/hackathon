@@ -1,0 +1,93 @@
+<div class="page">
+  <div class="header">
+    <h2>🆘 SOS Emergency</h2>
+    <a routerLink="/dashboard" class="back-btn">← Back</a>
+  </div>
+
+  <!-- SOS Trigger Button -->
+  <div class="sos-hero">
+    <button class="sos-btn" (click)="showForm = !showForm">
+      🆘 TRIGGER SOS
+    </button>
+    <p class="sos-hint">Press to send emergency alert</p>
+  </div>
+
+  <!-- SOS Form -->
+  <div class="form-card" *ngIf="showForm">
+    <h3>SOS Details</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input [(ngModel)]="sosRequest.senderName" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label>Your Phone</label>
+        <input [(ngModel)]="sosRequest.senderPhone" placeholder="01XXXXXXXXX" />
+      </div>
+      <div class="form-group">
+        <label>Latitude</label>
+        <input type="number" [(ngModel)]="sosRequest.latitude" />
+      </div>
+      <div class="form-group">
+        <label>Longitude</label>
+        <input type="number" [(ngModel)]="sosRequest.longitude" />
+      </div>
+      <div class="form-group full">
+        <label>Message</label>
+        <textarea [(ngModel)]="sosRequest.message" rows="3"
+          placeholder="Describe your emergency..."></textarea>
+      </div>
+    </div>
+    <button (click)="trigger()" class="btn-trigger" [disabled]="triggering">
+      {{ triggering ? 'Sending...' : '🆘 Send SOS' }}
+    </button>
+    <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+  </div>
+
+  <!-- Success Response -->
+  <div class="success-card" *ngIf="successAlert">
+    <h3>✅ SOS Sent Successfully!</h3>
+    <div class="response-grid">
+      <div class="response-item" *ngIf="successAlert.nearestAmbulance">
+        <h4>🚑 Nearest Ambulance</h4>
+        <p>{{ successAlert.nearestAmbulance.area }}</p>
+        <p>📞 {{ successAlert.nearestAmbulance.driverPhone }}</p>
+      </div>
+      <div class="response-item" *ngIf="successAlert.nearestSafeZone">
+        <h4>🏠 Nearest Safe Zone</h4>
+        <p>{{ successAlert.nearestSafeZone.name }}</p>
+        <p>📍 {{ successAlert.nearestSafeZone.address }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <!-- Active Alerts -->
+  <div class="section-title">
+    <h3>Active SOS Alerts</h3>
+    <button (click)="loadActive()" class="btn-refresh">🔄 Refresh</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading...</div>
+
+  <div class="card-grid" *ngIf="!loading">
+    <div class="sos-card" *ngFor="let a of activeAlerts">
+      <div class="card-top">
+        <span class="alert-badge">🆘 SOS</span>
+        <span class="time">{{ a.createdAt | date:'short' }}</span>
+      </div>
+      <h3>{{ a.senderName }}</h3>
+      <p class="phone">📞 {{ a.senderPhone }}</p>
+      <p class="message">{{ a.message }}</p>
+      <p class="coords">
+        📍 {{ a.latitude | number:'1.4-4' }}, {{ a.longitude | number:'1.4-4' }}
+      </p>
+      <button (click)="resolve(a)" class="btn-resolve">✅ Mark Resolved</button>
+    </div>
+  </div>
+
+  <div class="empty" *ngIf="!loading && activeAlerts.length === 0">
+    No active SOS alerts.
+  </div>
+</div>
