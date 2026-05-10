@@ -12,7 +12,9 @@
   background: #16213e;
 }
 
-.map-header h2 { margin: 0; }
+.map-header h2 {
+  margin: 0;
+}
 
 .back-btn {
   color: #e94560;
@@ -24,6 +26,7 @@
   height: calc(100vh - 60px);
   width: 100%;
 }
+
 .legend {
   display: flex;
   gap: 0.5rem;
@@ -35,13 +38,22 @@
   font-size: 0.8rem;
 }
 
-.legend-item.disaster { background: #e9456033; color: #e94560; }
-.legend-item.safezone { 
-  background: #00b09b33; 
-  color: #00b09b; 
+.legend-item.disaster {
+  background: #e9456033;
+  color: #e94560;
 }
 
-.legend-item.ambulance { 
-  background: #f7971e33; 
-  color: #f7971e; 
+.legend-item.safezone {
+  background: #00b09b33;
+  color: #00b09b;
+}
+
+.legend-item.ambulance {
+  background: #f7971e33;
+  color: #f7971e;
+}
+
+.legend-item.sos {
+  background: #ff444433;
+  color: #ff4444;
 }
