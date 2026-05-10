@@ -40,3 +40,8 @@
   background: #00b09b33; 
   color: #00b09b; 
 }
+
+.legend-item.ambulance { 
+  background: #f7971e33; 
+  color: #f7971e; 
+}

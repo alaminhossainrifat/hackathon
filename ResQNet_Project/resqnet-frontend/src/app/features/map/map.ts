@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import * as L from 'leaflet';
 import { DisasterService, Disaster } from '../../core/services/disaster';
 import { SafezoneService, SafeZone } from '../../core/services/safezone';
+import { AmbulanceService, Ambulance } from '../../core/services/ambulance';
 
 @Component({
   selector: 'app-map',
@@ -19,6 +20,7 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(
     private disasterService: DisasterService,
     private safezoneService: SafezoneService,
+    private ambulanceService: AmbulanceService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -26,6 +28,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.initMap();
     this.loadDisasters();
     this.loadSafeZones();
+    this.loadAmbulances();
   }
 
   ngOnDestroy() {
@@ -77,14 +80,14 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private loadSafeZones() {
-  this.safezoneService.getAll().subscribe({
-    next: (zones) => {
-      zones.forEach(z => {
-        if (z.latitude && z.longitude) {
-          L.marker([z.latitude, z.longitude], {
-            icon: L.divIcon({
-              className: '',
-              html: `<div style="
+    this.safezoneService.getAll().subscribe({
+      next: (zones) => {
+        zones.forEach(z => {
+          if (z.latitude && z.longitude) {
+            L.marker([z.latitude, z.longitude], {
+              icon: L.divIcon({
+                className: '',
+                html: `<div style="
                 background: #00b09b;
                 color: white;
                 padding: 4px 8px;
@@ -95,17 +98,53 @@ export class MapComponent implements OnInit, OnDestroy {
                 box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
                 🏠 ${z.zoneType}
               </div>`,
-              iconAnchor: [0, 0]
+                iconAnchor: [0, 0]
+              })
             })
-          })
-          .addTo(this.map)
-          .bindPopup(`
+              .addTo(this.map)
+              .bindPopup(`
             <b>🏠 ${z.name}</b><br>
             Type: ${z.zoneType}<br>
             Address: ${z.address}<br>
             Capacity: ${z.currentOccupancy}/${z.capacity}<br>
             Contact: ${z.contactNumber}<br>
             Status: ${z.available ? '🟢 Available' : '🔴 Unavailable'}
+          `);
+          }
+        });
+      }
+    });
+  }
+
+  private loadAmbulances() {
+  this.ambulanceService.getAll().subscribe({
+    next: (ambulances) => {
+      ambulances.forEach(a => {
+        if (a.currentLatitude && a.currentLongitude) {
+          L.marker([a.currentLatitude, a.currentLongitude], {
+            icon: L.divIcon({
+              className: '',
+              html: `<div style="
+                background: #f7971e;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                white-space: nowrap;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                🚑 ${a.vehicleNumber}
+              </div>`,
+              iconAnchor: [0, 0]
+            })
+          })
+          .addTo(this.map)
+          .bindPopup(`
+            <b>🚑 ${a.vehicleNumber}</b><br>
+            Driver: ${a.driverName}<br>
+            Phone: ${a.driverPhone}<br>
+            Area: ${a.area}<br>
+            Status: ${a.status}
           `);
         }
       });
