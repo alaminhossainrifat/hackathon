@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import * as L from 'leaflet';
 import { DisasterService, Disaster } from '../../core/services/disaster';
+import { SafezoneService, SafeZone } from '../../core/services/safezone';
 
 @Component({
   selector: 'app-map',
@@ -17,12 +18,14 @@ export class MapComponent implements OnInit, OnDestroy {
 
   constructor(
     private disasterService: DisasterService,
+    private safezoneService: SafezoneService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initMap();
     this.loadDisasters();
+    this.loadSafeZones();
   }
 
   ngOnDestroy() {
@@ -58,8 +61,8 @@ export class MapComponent implements OnInit, OnDestroy {
                 iconAnchor: [0, 0]
               })
             })
-            .addTo(this.map)
-            .bindPopup(`
+              .addTo(this.map)
+              .bindPopup(`
               <b>🚨 ${d.title}</b><br>
               Type: ${d.alertType}<br>
               Severity: ${d.severity}<br>
@@ -72,4 +75,41 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  private loadSafeZones() {
+  this.safezoneService.getAll().subscribe({
+    next: (zones) => {
+      zones.forEach(z => {
+        if (z.latitude && z.longitude) {
+          L.marker([z.latitude, z.longitude], {
+            icon: L.divIcon({
+              className: '',
+              html: `<div style="
+                background: #00b09b;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                white-space: nowrap;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                🏠 ${z.zoneType}
+              </div>`,
+              iconAnchor: [0, 0]
+            })
+          })
+          .addTo(this.map)
+          .bindPopup(`
+            <b>🏠 ${z.name}</b><br>
+            Type: ${z.zoneType}<br>
+            Address: ${z.address}<br>
+            Capacity: ${z.currentOccupancy}/${z.capacity}<br>
+            Contact: ${z.contactNumber}<br>
+            Status: ${z.available ? '🟢 Available' : '🔴 Unavailable'}
+          `);
+        }
+      });
+    }
+  });
+}
 }

@@ -36,3 +36,7 @@
 }
 
 .legend-item.disaster { background: #e9456033; color: #e94560; }
+.legend-item.safezone { 
+  background: #00b09b33; 
+  color: #00b09b; 
+}
