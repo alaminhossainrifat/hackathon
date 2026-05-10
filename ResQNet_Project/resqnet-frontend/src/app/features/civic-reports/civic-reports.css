@@ -1,0 +1,163 @@
+.page {
+  min-height: 100vh;
+  background: #1a1a2e;
+  color: white;
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header h2 { margin: 0; }
+.actions { display: flex; gap: 1rem; align-items: center; }
+
+.btn-add {
+  background: #0f3460;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back-btn { color: #e94560; text-decoration: none; }
+
+.filter-bar {
+  margin-bottom: 1.5rem;
+}
+
+.filter-bar select {
+  background: #16213e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  color: white;
+  min-width: 200px;
+}
+
+.form-card {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group.full { grid-column: 1 / -1; }
+label { color: #aaa; font-size: 0.85rem; }
+
+input, select, textarea {
+  background: #0f3460;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.6rem;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.btn-submit {
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-right: 0.5rem;
+}
+
+.btn-cancel {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.report-card {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid #0f3460;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.type-badge {
+  background: #0f3460;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+}
+
+.status-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.status-pending { background: #f7971e33; color: #f7971e; }
+.status-progress { background: #0f346055; color: #4fc3f7; }
+.status-resolved { background: #00b09b33; color: #00b09b; }
+
+.report-card h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.location, .desc { color: #aaa; font-size: 0.85rem; margin: 0 0 0.3rem; }
+
+.reporter {
+  border-top: 1px solid #0f3460;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+}
+
+.reporter p { color: #ccc; font-size: 0.8rem; margin: 0; }
+
+.status-actions { margin-top: 0.8rem; }
+.status-actions select {
+  width: 100%;
+  background: #0f3460;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.5rem;
+  color: white;
+}
+
+.error {
+  background: #e9456022;
+  border: 1px solid #e94560;
+  color: #e94560;
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.loading, .empty {
+  text-align: center;
+  color: #aaa;
+  padding: 3rem;
+}

@@ -1,0 +1,80 @@
+<div class="page">
+    <div class="header">
+        <h2>🏙️ Civic Reports</h2>
+        <div class="actions">
+            <button (click)="showForm = !showForm" class="btn-add">+ Submit Report</button>
+            <a routerLink="/dashboard" class="back-btn">← Back</a>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <select [(ngModel)]="filterStatus" (change)="load()">
+            <option value="">All Status</option>
+            <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="form-card" *ngIf="showForm">
+        <h3>Submit Civic Report</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Title</label>
+                <input [(ngModel)]="newReport.title" placeholder="Report title" />
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select [(ngModel)]="newReport.reportType">
+                    <option *ngFor="let t of reportTypes" [value]="t">{{ t }}</option>
+                </select>
+            </div>
+            <div class="form-group full">
+                <label>Location</label>
+                <input [(ngModel)]="newReport.location" placeholder="Exact location" />
+            </div>
+            <div class="form-group">
+                <label>Your Name</label>
+                <input [(ngModel)]="newReport.reporterName" placeholder="Name" />
+            </div>
+            <div class="form-group">
+                <label>Your Phone</label>
+                <input [(ngModel)]="newReport.reporterPhone" placeholder="01XXXXXXXXX" />
+            </div>
+            <div class="form-group full">
+                <label>Description</label>
+                <textarea [(ngModel)]="newReport.description" rows="3" placeholder="Describe the issue..."></textarea>
+            </div>
+        </div>
+        <button (click)="create()" class="btn-submit">Submit</button>
+        <button (click)="showForm = false" class="btn-cancel">Cancel</button>
+    </div>
+
+    <div class="loading" *ngIf="loading">Loading...</div>
+
+    <div class="card-grid" *ngIf="!loading">
+        <div class="report-card" *ngFor="let r of reports">
+            <div class="card-top">
+                <span class="type-badge">{{ getTypeIcon(r.reportType) }} {{ r.reportType }}</span>
+                <span class="status-badge" [ngClass]="getStatusClass(r.status || '')">
+                    {{ r.status }}
+                </span>
+            </div>
+            <h3>{{ r.title }}</h3>
+            <p class="location">📍 {{ r.location }}</p>
+            <p class="desc">{{ r.description }}</p>
+            <div class="reporter">
+                <p>👤 {{ r.reporterName }} | 📞 {{ r.reporterPhone }}</p>
+            </div>
+            <div class="status-actions">
+                <select (change)="updateStatus(r, $any($event.target).value)" [value]="r.status">
+                    <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && reports.length === 0">
+        No reports found.
+    </div>
+</div>
