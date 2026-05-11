@@ -13,22 +13,27 @@ import { MissingPersonsComponent } from './features/missing-persons/missing-pers
 import { CivicReportsComponent } from './features/civic-reports/civic-reports';
 import { SosComponent } from './features/sos/sos';
 import { ResqbotComponent } from './features/resqbot/resqbot';
-
+import { HomeComponent } from './features/home/home';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+
+  // Guest accessible
+  { path: 'map', component: MapComponent },
+  { path: 'disasters', component: DisastersComponent },
+  { path: 'safezones', component: SafezonesComponent },
+  { path: 'resqbot', component: ResqbotComponent },
+
+  // Protected
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
-  { path: 'map', component: MapComponent, canActivate: [authGuard] },
-  { path: 'disasters', component: DisastersComponent, canActivate: [authGuard] },
-  { path: 'safezones', component: SafezonesComponent, canActivate: [authGuard] },
   { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
   { path: 'ambulances', component: AmbulancesComponent, canActivate: [authGuard] },
   { path: 'blood-bank', component: BloodBankComponent, canActivate: [authGuard] },
   { path: 'missing-persons', component: MissingPersonsComponent, canActivate: [authGuard] },
   { path: 'civic-reports', component: CivicReportsComponent, canActivate: [authGuard] },
   { path: 'sos', component: SosComponent, canActivate: [authGuard] },
-  { path: 'resqbot', component: ResqbotComponent, canActivate: [authGuard] },
 ];

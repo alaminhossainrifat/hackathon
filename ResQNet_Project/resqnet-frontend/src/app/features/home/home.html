@@ -1,0 +1,41 @@
+<div class="home">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>🚨 ResQNet</h1>
+      <p class="tagline">One Platform. Every Emergency. Every City.</p>
+      <p class="sub">AI-powered unified crisis management for Bangladesh</p>
+
+      <div class="hero-actions">
+        <a routerLink="/map" class="btn-primary">🗺️ View Live Map</a>
+        <a routerLink="/disasters" class="btn-secondary">🚨 Active Alerts</a>
+      </div>
+
+      <div class="auth-actions" *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" class="btn-login">Login</a>
+        <a routerLink="/register" class="btn-register">Register</a>
+        <span class="guest-note">or browse as guest ↑</span>
+      </div>
+
+      <div class="auth-actions" *ngIf="authService.isLoggedIn()">
+        <a routerLink="/dashboard" class="btn-primary">Go to Dashboard →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="features-section">
+    <h2>Our Services</h2>
+    <div class="features-grid">
+      <a *ngFor="let f of features"
+         [routerLink]="authService.isLoggedIn() || f.guest ? f.route : '/login'"
+         class="feature-card"
+         [class.locked]="!authService.isLoggedIn() && !f.guest">
+        <span class="feature-icon">{{ f.icon }}</span>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.desc }}</p>
+        <span class="lock-badge" *ngIf="!authService.isLoggedIn() && !f.guest">🔒 Login required</span>
+      </a>
+    </div>
+  </div>
+</div>
