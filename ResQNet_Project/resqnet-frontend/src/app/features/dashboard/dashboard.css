@@ -10,7 +10,7 @@
   align-items: center;
   padding: 1rem 2rem;
   background: #16213e;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .brand {
@@ -67,4 +67,22 @@ h1 {
   background: #0f3460;
   border-color: #e94560;
   transform: translateY(-3px);
+}
+
+.notifications {
+  background: #16213e;
+  border-left: 4px solid #e94560;
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
+
+.notif-item {
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  color: #ffcccc;
+  border-bottom: 1px solid #0f346033;
+}
+
+.notif-item:last-child {
+  border-bottom: none;
 }
