@@ -30,7 +30,14 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/health", "/ws/**").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/health",
+                                "/ws/**",
+                                "/api/disasters",
+                                "/api/safezones",
+                                "/api/resqbot/chat"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
