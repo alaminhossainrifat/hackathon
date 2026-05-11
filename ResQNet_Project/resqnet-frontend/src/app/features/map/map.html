@@ -1,13 +1,44 @@
 <div class="map-page">
-  <div class="map-header">
-    <h2>🗺️ Disaster Map</h2>
-    <div class="legend">
-      <span class="legend-item disaster">🚨 Disaster</span>
-      <span class="legend-item safezone">🏠 Safe Zone</span>
-      <span class="legend-item ambulance">🚑 Ambulance</span>
-      <span class="legend-item sos">🆘 SOS</span>
-    </div>
+
+  <!-- Controls bar -->
+  <div class="map-controls">
     <a routerLink="/dashboard" class="back-btn">← Back</a>
+    <div class="control-group">
+      <button (click)="toggleTraffic()" [class.active]="showTraffic" class="ctrl-btn">
+        🚦 {{ showTraffic ? 'Hide Traffic' : 'Show Traffic' }}
+      </button>
+      <button (click)="toggleIncidents()" [class.active]="showIncidents" class="ctrl-btn">
+        ⚠️ {{ showIncidents ? 'Hide Incidents' : 'Show Incidents' }}
+      </button>
+    </div>
   </div>
+
+  <!-- Map -->
   <div id="map"></div>
+
+  <!-- Weather widget -->
+  <div class="weather-widget" *ngIf="weather && !weatherLoading">
+    <img [src]="weather.icon" class="weather-icon" />
+    <div class="weather-info">
+      <div class="weather-temp">{{ weather.temp }}°C</div>
+      <div class="weather-city">{{ weather.city }}</div>
+      <div class="weather-desc">{{ weather.description }}</div>
+      <div class="weather-extra">
+        💧 {{ weather.humidity }}% &nbsp; 💨 {{ weather.windSpeed }}m/s
+      </div>
+    </div>
+  </div>
+
+  <div class="weather-widget loading" *ngIf="weatherLoading">
+    Loading weather...
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><span class="dot red"></span> Disaster</div>
+    <div class="legend-item"><span class="dot green"></span> Safe Zone</div>
+    <div class="legend-item"><span class="dot orange"></span> Ambulance</div>
+    <div class="legend-item"><span class="dot darkred"></span> SOS</div>
+  </div>
+
 </div>

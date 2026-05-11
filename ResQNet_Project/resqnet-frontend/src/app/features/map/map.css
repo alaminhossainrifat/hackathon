@@ -1,59 +1,159 @@
 .map-page {
-  min-height: 100vh;
+  position: relative;
+  height: 100vh;
   background: #1a1a2e;
   color: white;
 }
 
-.map-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #16213e;
+#map {
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
 }
 
-.map-header h2 {
-  margin: 0;
+/* Controls */
+.map-controls {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  background: rgba(22, 33, 62, 0.92);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  border: 1px solid #0f3460;
 }
 
 .back-btn {
   color: #e94560;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: bold;
 }
 
-#map {
-  height: calc(100vh - 60px);
-  width: 100%;
-}
-
-.legend {
+.control-group {
   display: flex;
   gap: 0.5rem;
 }
 
-.legend-item {
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
+.ctrl-btn {
+  background: #0f3460;
+  color: white;
+  border: 1px solid #333;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: all 0.2s;
+}
+
+.ctrl-btn:hover {
+  background: #1a4a80;
+}
+
+.ctrl-btn.active {
+  background: #e94560;
+  border-color: #e94560;
+}
+
+/* Weather widget */
+.weather-widget {
+  position: absolute;
+  bottom: 2rem;
+  right: 1rem;
+  z-index: 1000;
+  background: rgba(22, 33, 62, 0.92);
+  border: 1px solid #0f3460;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  backdrop-filter: blur(8px);
+  min-width: 160px;
+}
+
+.weather-widget.loading {
+  color: #aaa;
+  font-size: 0.85rem;
+  justify-content: center;
+}
+
+.weather-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.weather-temp {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.weather-city {
   font-size: 0.8rem;
+  color: #aaa;
 }
 
-.legend-item.disaster {
-  background: #e9456033;
-  color: #e94560;
-}
-
-.legend-item.safezone {
-  background: #00b09b33;
+.weather-desc {
+  font-size: 0.78rem;
   color: #00b09b;
+  text-transform: capitalize;
 }
 
-.legend-item.ambulance {
-  background: #f7971e33;
-  color: #f7971e;
+.weather-extra {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 0.2rem;
 }
 
-.legend-item.sos {
-  background: #ff444433;
-  color: #ff4444;
+/* Legend */
+.legend {
+  position: absolute;
+  bottom: 2rem;
+  left: 1rem;
+  z-index: 1000;
+  background: rgba(22, 33, 62, 0.92);
+  border: 1px solid #0f3460;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  backdrop-filter: blur(8px);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: white;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.red {
+  background: #e94560;
+}
+
+.dot.green {
+  background: #00b09b;
+}
+
+.dot.orange {
+  background: #f7971e;
+}
+
+.dot.darkred {
+  background: #ff4444;
 }
