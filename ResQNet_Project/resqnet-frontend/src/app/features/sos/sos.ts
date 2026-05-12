@@ -18,6 +18,9 @@ export class SosComponent implements OnInit {
   error = '';
   successAlert: SosAlert | null = null;
   showForm = false;
+  
+  // Dynamic UI field for the mock Twilio SMS
+  emergencyContact: string = '';
 
   sosRequest: SosRequest = {
     senderName: '',
@@ -67,6 +70,10 @@ export class SosComponent implements OnInit {
     this.triggering = true;
     this.error = '';
     this.successAlert = null;
+
+    // Display initiation alert
+    alert('🚨 SOS Protocol Initiated!\nFetching GPS coordinates and preparing Twilio SMS...');
+
     this.sosService.trigger(this.sosRequest).subscribe({
       next: (res) => {
         this.successAlert = res;
@@ -74,6 +81,16 @@ export class SosComponent implements OnInit {
         this.showForm = false;
         this.loadActive();
         this.cdr.detectChanges();
+
+        // Display Twilio SMS mock alert with dynamic user input
+        setTimeout(() => {
+          const mockLocation = `${this.sosRequest.latitude.toFixed(4)}, ${this.sosRequest.longitude.toFixed(4)}`;
+          // Use user input or fallback to a default message if left blank
+          const targetNumber = this.emergencyContact ? this.emergencyContact : 'Registered Family Member'; 
+          const smsBody = `URGENT SOS! I need immediate help. My current location: ${mockLocation}. Dispatched via ResQNet.`;
+
+          alert(`✅ TWILIO SMS DELIVERED (MOCK)\n\nTo: ${targetNumber}\nMessage: "${smsBody}"\n\nStatus: Nearest Ambulance and ResQBot activated!`);
+        }, 2000);
       },
       error: () => {
         this.error = 'Failed to trigger SOS';
@@ -91,10 +108,12 @@ export class SosComponent implements OnInit {
 
   resetForm() {
     this.sosRequest = {
-      senderName: '', senderPhone: '',
+      senderName: '', 
+      senderPhone: '',
       latitude: this.sosRequest.latitude,
       longitude: this.sosRequest.longitude,
       message: ''
     };
+    this.emergencyContact = ''; // Reset the dynamic field
   }
 }
