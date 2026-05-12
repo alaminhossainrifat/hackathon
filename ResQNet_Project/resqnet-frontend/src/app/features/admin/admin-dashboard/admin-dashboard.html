@@ -1,0 +1,53 @@
+<div class="dashboard-content">
+  
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats" [style.border-bottom-color]="stat.color">
+      <div class="stat-icon">{{ stat.icon }}</div>
+      <div class="stat-info">
+        <h3>{{ stat.value }}</h3>
+        <p>{{ stat.title }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h4>Recent SOS Requests</h4>
+      <button class="view-all-btn">View All</button>
+    </div>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Sender Name</th>
+          <th>Contact</th>
+          <th>Location</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sos of recentSos">
+          <td>{{ sos.id }}</td>
+          <td>{{ sos.name }}</td>
+          <td>{{ sos.phone }}</td>
+          <td>{{ sos.location }}</td>
+          <td>{{ sos.time }}</td>
+          <td>
+            <span class="status-badge" 
+                  [class.pending]="sos.status === 'Pending'"
+                  [class.resolved]="sos.status === 'Resolved'"
+                  [class.dispatched]="sos.status === 'Dispatched'">
+              {{ sos.status }}
+            </span>
+          </td>
+          <td>
+            <button class="action-btn">Manage</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

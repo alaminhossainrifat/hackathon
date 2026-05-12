@@ -11,6 +11,7 @@ export interface SosRequest {
 }
 
 export interface SosAlert {
+  status: string;
   id?: number;
   senderName: string;
   senderPhone: string;

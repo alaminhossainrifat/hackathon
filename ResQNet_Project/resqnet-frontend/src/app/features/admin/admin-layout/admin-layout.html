@@ -1,0 +1,30 @@
+<div class="admin-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>ResQNet <span class="badge">Admin</span></h2>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">📊 Dashboard</a>
+      
+      <a (click)="showMockAlert('Disaster')" class="nav-item">🚨 Disasters (Mock)</a>
+      <a (click)="showMockAlert('SOS Alert')" class="nav-item">🆘 SOS Alerts (Mock)</a>
+      <a (click)="showMockAlert('Safe Zone')" class="nav-item">🏠 Safe Zones (Mock)</a>
+      
+      <div class="spacer"></div>
+      
+      <a routerLink="/dashboard" class="nav-item return-btn">← Back to App</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <h3>System Overview</h3>
+      <div class="user-profile">
+        <span class="avatar">👨‍💻</span> Admin User
+      </div>
+    </header>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

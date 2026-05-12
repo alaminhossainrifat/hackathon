@@ -14,6 +14,9 @@ import { CivicReportsComponent } from './features/civic-reports/civic-reports';
 import { SosComponent } from './features/sos/sos';
 import { ResqbotComponent } from './features/resqbot/resqbot';
 import { HomeComponent } from './features/home/home';
+import { AdminLayoutComponent } from './features/admin/admin-layout/admin-layout';
+import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard';
+
 
 
 export const routes: Routes = [
@@ -21,6 +24,15 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+
+  // Admin
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
+      { path: '', component: AdminDashboardComponent }
+    ]
+  },
 
   // Guest accessible
   { path: 'map', component: MapComponent },
