@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface WeatherData {
   temp: number;
@@ -13,12 +15,11 @@ export interface WeatherData {
 
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
-  private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+  constructor(private http: HttpClient) { }
 
-  getWeather(lat: number, lon: number): Promise<any> {
-    return fetch(
-      `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${environment.weatherApiKey}&units=metric`
-    ).then(r => r.json());
+  // data call from proxy
+  getWeather(lat: number | string, lon: number | string): Observable<any> {
+    return this.http.get(`${environment.proxyUrl}/weather?lat=${lat}&lon=${lon}`);
   }
 
   parseWeather(data: any): WeatherData {

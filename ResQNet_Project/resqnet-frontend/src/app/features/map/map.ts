@@ -69,13 +69,17 @@ export class MapComponent implements OnInit, OnDestroy {
   // ── Weather ─────────────────────────────────────────
   loadWeather(lat: number, lon: number) {
     this.weatherLoading = true;
-    this.weatherService.getWeather(lat, lon).then((data: any) => {
-      this.weather = this.weatherService.parseWeather(data);
-      this.weatherLoading = false;
-      this.cdr.detectChanges();
-    }).catch(() => {
-      this.weatherLoading = false;
-      this.cdr.detectChanges();
+    this.weatherService.getWeather(lat, lon).subscribe({
+      next: (data) => {
+        this.weather = this.weatherService.parseWeather(data);
+        this.weatherLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Weather error:', err);
+        this.weatherLoading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 

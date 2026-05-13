@@ -4,12 +4,11 @@ import * as L from 'leaflet';
 
 @Injectable({ providedIn: 'root' })
 export class TrafficService {
-  private trafficLayer: L.TileLayer | null = null;
-  private tomtomKey = environment.tomtomApiKey;
+  private proxyUrl = `${environment.apiUrl}/proxy`; 
 
   getTrafficTileLayer(): L.TileLayer {
     return L.tileLayer(
-      `https://api.tomtom.com/traffic/map/4/tile/flow/relative/{z}/{x}/{y}.png?key=${this.tomtomKey}`,
+      `${this.proxyUrl}/tomtom-traffic/{z}/{x}/{y}.png`, // Backend Proxy Root
       {
         opacity: 0.7,
         attribution: '© TomTom Traffic'
@@ -19,7 +18,7 @@ export class TrafficService {
 
   getIncidentLayer(): L.TileLayer {
     return L.tileLayer(
-      `https://api.tomtom.com/traffic/map/4/tile/incidents/s3/{z}/{x}/{y}.png?key=${this.tomtomKey}`,
+      `${this.proxyUrl}/tomtom-incidents/{z}/{x}/{y}.png`, // Backend Proxy Root
       {
         opacity: 0.8,
         attribution: '© TomTom Incidents'
