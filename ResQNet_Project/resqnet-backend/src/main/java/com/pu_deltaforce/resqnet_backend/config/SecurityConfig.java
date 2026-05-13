@@ -36,7 +36,10 @@ public class SecurityConfig {
                                 "/ws/**",
                                 "/api/disasters",
                                 "/api/safezones",
-                                "/api/resqbot/chat"
+                                "/api/resqbot/chat",
+                                "/api/proxy/**",
+                                "/api/sos/active",
+                                "/api/ambulances"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
