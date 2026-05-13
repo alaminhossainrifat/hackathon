@@ -18,7 +18,7 @@ import { TrafficService } from '../../core/services/traffic';
 })
 export class MapComponent implements OnInit, OnDestroy {
   private map!: L.Map;
-  
+
   // Layer Groups to categorize different types of markers
   private disasterLayer = L.layerGroup();
   private safeZoneLayer = L.layerGroup();
@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
   weather: WeatherData | null = null;
   weatherLoading = false;
 
-  // Initial map coordinates (Dhaka, Bangladesh)
+  // Default map coordinates (Dhaka, Bangladesh)
   private defaultLat = 23.8103;
   private defaultLng = 90.4125;
 
@@ -50,34 +50,31 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMap();
+    this.detectUserLocation(); // Trigger Geolocation request
     this.loadDisasters();
     this.loadSafeZones();
     this.loadAmbulances();
     this.loadSosAlerts();
-    this.loadWeather(this.defaultLat, this.defaultLng);
   }
 
   ngOnDestroy() {
-    // Destroy map instance to prevent memory leaks when component is destroyed
+    // Cleanup map instance to prevent memory leaks
     if (this.map) this.map.remove();
   }
 
   private initMap() {
-    // Create map instance
+    // Initialize map with default view (Dhaka) until location is detected
     this.map = L.map('map').setView([this.defaultLat, this.defaultLng], 7);
-    
-    // Default OpenStreetMap base layer
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // Add all layer groups to the map initially
     this.disasterLayer.addTo(this.map);
     this.safeZoneLayer.addTo(this.map);
     this.ambulanceLayer.addTo(this.map);
     this.sosLayer.addTo(this.map);
 
-    // Configuration for Layer Control UI
     const overlayMaps = {
       "🚨 Disasters": this.disasterLayer,
       "🏠 Safe Zones": this.safeZoneLayer,
@@ -85,16 +82,50 @@ export class MapComponent implements OnInit, OnDestroy {
       "🆘 SOS Alerts": this.sosLayer
     };
 
-    // Add control panel to the map. Using {} for baseLayers to fix type error.
     L.control.layers({}, overlayMaps, { collapsed: false }).addTo(this.map);
 
-    // Global click listener for weather updates
     this.map.on('click', (e: L.LeafletMouseEvent) => {
       this.loadWeather(e.latlng.lat, e.latlng.lng);
     });
   }
 
-  // ── Weather Data Management ─────────────────────────
+  /**
+   * Browser-based Geolocation request
+   * Syncs the map view to the user's live position
+   */
+  private detectUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+
+          // Update map view to focus on user
+          this.map.setView([latitude, longitude], 13);
+
+          // Add a distinct pulse or marker for the user's location
+          L.circleMarker([latitude, longitude], {
+            radius: 10,
+            fillColor: '#007bff',
+            color: '#fff',
+            weight: 3,
+            opacity: 1,
+            fillOpacity: 0.8
+          }).addTo(this.map).bindPopup("You are here").openPopup();
+
+          // Auto-load weather for user's current location
+          this.loadWeather(latitude, longitude);
+        },
+        (err) => {
+          console.warn('Location access denied. Using default coordinates.', err);
+          this.loadWeather(this.defaultLat, this.defaultLng);
+        }
+      );
+    } else {
+      this.loadWeather(this.defaultLat, this.defaultLng);
+    }
+  }
+
+  // ── Weather Management ──────────────────────────────
   loadWeather(lat: number, lon: number) {
     this.weatherLoading = true;
     this.weatherService.getWeather(lat, lon).subscribe({
@@ -104,7 +135,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Weather error:', err);
+        console.error('Weather fetching failed:', err);
         this.weatherLoading = false;
         this.cdr.detectChanges();
       }
@@ -147,7 +178,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 iconAnchor: [0, 0]
               })
             }).bindPopup(`<b>🚨 ${d.title}</b><br>Type: ${d.alertType}<br>Severity: ${d.severity}<br>Status: ${d.active ? '🟢 Active' : '🔴 Inactive'}`);
-            
+
             // Marker added to layer group instead of direct map
             marker.addTo(this.disasterLayer);
           }
@@ -168,7 +199,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 iconAnchor: [0, 0]
               })
             }).bindPopup(`<b>🏠 ${z.name}</b><br>Type: ${z.zoneType}<br>Address: ${z.address}<br>Capacity: ${z.currentOccupancy}/${z.capacity}`);
-            
+
             marker.addTo(this.safeZoneLayer);
           }
         });
@@ -188,7 +219,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 iconAnchor: [0, 0]
               })
             }).bindPopup(`<b>🚑 ${a.vehicleNumber}</b><br>Driver: ${a.driverName}<br>Status: ${a.status}`);
-            
+
             marker.addTo(this.ambulanceLayer);
           }
         });
@@ -208,7 +239,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 iconAnchor: [0, 0]
               })
             }).bindPopup(`<b>🆘 SOS Alert</b><br>Name: ${a.senderName}<br>Message: ${a.message}`);
-            
+
             marker.addTo(this.sosLayer);
           }
         });
