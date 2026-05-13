@@ -18,7 +18,14 @@ import { TrafficService } from '../../core/services/traffic';
 })
 export class MapComponent implements OnInit, OnDestroy {
   private map!: L.Map;
-  private markers: L.Marker[] = [];
+  
+  // Layer Groups to categorize different types of markers
+  private disasterLayer = L.layerGroup();
+  private safeZoneLayer = L.layerGroup();
+  private ambulanceLayer = L.layerGroup();
+  private sosLayer = L.layerGroup();
+
+  // Traffic and Incident layers from TomTom
   private trafficLayer: L.TileLayer | null = null;
   private incidentLayer: L.TileLayer | null = null;
 
@@ -27,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
   weather: WeatherData | null = null;
   weatherLoading = false;
 
-  // Bangladesh center (Updated for explicit 'Dhaka' reading)
+  // Initial map coordinates (Dhaka, Bangladesh)
   private defaultLat = 23.8103;
   private defaultLng = 90.4125;
 
@@ -51,22 +58,43 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // Destroy map instance to prevent memory leaks when component is destroyed
     if (this.map) this.map.remove();
   }
 
   private initMap() {
+    // Create map instance
     this.map = L.map('map').setView([this.defaultLat, this.defaultLng], 7);
+    
+    // Default OpenStreetMap base layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // Click → load weather at clicked location
+    // Add all layer groups to the map initially
+    this.disasterLayer.addTo(this.map);
+    this.safeZoneLayer.addTo(this.map);
+    this.ambulanceLayer.addTo(this.map);
+    this.sosLayer.addTo(this.map);
+
+    // Configuration for Layer Control UI
+    const overlayMaps = {
+      "🚨 Disasters": this.disasterLayer,
+      "🏠 Safe Zones": this.safeZoneLayer,
+      "🚑 Ambulances": this.ambulanceLayer,
+      "🆘 SOS Alerts": this.sosLayer
+    };
+
+    // Add control panel to the map. Using {} for baseLayers to fix type error.
+    L.control.layers({}, overlayMaps, { collapsed: false }).addTo(this.map);
+
+    // Global click listener for weather updates
     this.map.on('click', (e: L.LeafletMouseEvent) => {
       this.loadWeather(e.latlng.lat, e.latlng.lng);
     });
   }
 
-  // ── Weather ─────────────────────────────────────────
+  // ── Weather Data Management ─────────────────────────
   loadWeather(lat: number, lon: number) {
     this.weatherLoading = true;
     this.weatherService.getWeather(lat, lon).subscribe({
@@ -83,7 +111,7 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ── Traffic Toggle ───────────────────────────────────
+  // ── Traffic Layer Toggles ───────────────────────────
   toggleTraffic() {
     this.showTraffic = !this.showTraffic;
     if (this.showTraffic) {
@@ -106,7 +134,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  // ── Existing loaders (unchanged) ────────────────────
+  // ── Data Loaders (Added to specific Layer Groups) ───
   private loadDisasters() {
     this.disasterService.getAll().subscribe({
       next: (disasters) => {
@@ -118,9 +146,10 @@ export class MapComponent implements OnInit, OnDestroy {
                 html: `<div style="background:#e94560;color:white;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.3);">🚨 ${d.alertType}</div>`,
                 iconAnchor: [0, 0]
               })
-            }).addTo(this.map)
-              .bindPopup(`<b>🚨 ${d.title}</b><br>Type: ${d.alertType}<br>Severity: ${d.severity}<br>Location: ${d.location}<br>Status: ${d.active ? '🟢 Active' : '🔴 Inactive'}`);
-            this.markers.push(marker);
+            }).bindPopup(`<b>🚨 ${d.title}</b><br>Type: ${d.alertType}<br>Severity: ${d.severity}<br>Status: ${d.active ? '🟢 Active' : '🔴 Inactive'}`);
+            
+            // Marker added to layer group instead of direct map
+            marker.addTo(this.disasterLayer);
           }
         });
       }
@@ -132,14 +161,15 @@ export class MapComponent implements OnInit, OnDestroy {
       next: (zones) => {
         zones.forEach(z => {
           if (z.latitude && z.longitude) {
-            L.marker([z.latitude, z.longitude], {
+            const marker = L.marker([z.latitude, z.longitude], {
               icon: L.divIcon({
                 className: '',
                 html: `<div style="background:#00b09b;color:white;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.3);">🏠 ${z.zoneType}</div>`,
                 iconAnchor: [0, 0]
               })
-            }).addTo(this.map)
-              .bindPopup(`<b>🏠 ${z.name}</b><br>Type: ${z.zoneType}<br>Address: ${z.address}<br>Capacity: ${z.currentOccupancy}/${z.capacity}<br>Contact: ${z.contactNumber}<br>Status: ${z.available ? '🟢 Available' : '🔴 Unavailable'}`);
+            }).bindPopup(`<b>🏠 ${z.name}</b><br>Type: ${z.zoneType}<br>Address: ${z.address}<br>Capacity: ${z.currentOccupancy}/${z.capacity}`);
+            
+            marker.addTo(this.safeZoneLayer);
           }
         });
       }
@@ -151,14 +181,15 @@ export class MapComponent implements OnInit, OnDestroy {
       next: (ambulances) => {
         ambulances.forEach(a => {
           if (a.currentLatitude && a.currentLongitude) {
-            L.marker([a.currentLatitude, a.currentLongitude], {
+            const marker = L.marker([a.currentLatitude, a.currentLongitude], {
               icon: L.divIcon({
                 className: '',
                 html: `<div style="background:#f7971e;color:white;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.3);">🚑 ${a.vehicleNumber}</div>`,
                 iconAnchor: [0, 0]
               })
-            }).addTo(this.map)
-              .bindPopup(`<b>🚑 ${a.vehicleNumber}</b><br>Driver: ${a.driverName}<br>Phone: ${a.driverPhone}<br>Area: ${a.area}<br>Status: ${a.status}`);
+            }).bindPopup(`<b>🚑 ${a.vehicleNumber}</b><br>Driver: ${a.driverName}<br>Status: ${a.status}`);
+            
+            marker.addTo(this.ambulanceLayer);
           }
         });
       }
@@ -170,14 +201,15 @@ export class MapComponent implements OnInit, OnDestroy {
       next: (alerts) => {
         alerts.forEach(a => {
           if (a.latitude && a.longitude) {
-            L.marker([a.latitude, a.longitude], {
+            const marker = L.marker([a.latitude, a.longitude], {
               icon: L.divIcon({
                 className: '',
                 html: `<div style="background:#ff4444;color:white;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;white-space:nowrap;box-shadow:0 0 10px #ff444488;">🆘 SOS</div>`,
                 iconAnchor: [0, 0]
               })
-            }).addTo(this.map)
-              .bindPopup(`<b>🆘 SOS Alert</b><br>Name: ${a.senderName}<br>Phone: ${a.senderPhone}<br>Message: ${a.message}<br>Time: ${a.createdAt}`);
+            }).bindPopup(`<b>🆘 SOS Alert</b><br>Name: ${a.senderName}<br>Message: ${a.message}`);
+            
+            marker.addTo(this.sosLayer);
           }
         });
       }
