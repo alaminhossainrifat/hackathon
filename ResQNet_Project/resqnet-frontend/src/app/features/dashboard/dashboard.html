@@ -1,7 +1,11 @@
 <div class="dashboard">
   <nav class="navbar">
-    <div class="brand">🚨 ResQNet</div>
-    <button class="logout-btn" (click)="logout()">Logout</button>
+    <div class="brand" routerLink="/dashboard" style="cursor: pointer;">🚨 ResQNet</div>
+
+    <div class="nav-actions">
+      <button class="profile-btn" routerLink="/profile">👤 Profile</button>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </div>
   </nav>
 
   <!-- Notifications -->
@@ -16,9 +20,7 @@
     <p class="sub">Disaster Response Network — Select a module</p>
 
     <div class="grid">
-      <a *ngFor="let item of menuItems"
-         [routerLink]="item.route"
-         class="card">
+      <a *ngFor="let item of menuItems" [routerLink]="item.route" class="card">
         {{ item.label }}
       </a>
     </div>

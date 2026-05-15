@@ -86,3 +86,24 @@ h1 {
 .notif-item:last-child {
   border-bottom: none;
 }
+
+.nav-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.profile-btn {
+  background: transparent;
+  border: 1px solid #00b09b;
+  color: #00b09b;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.profile-btn:hover {
+  background: rgba(0, 176, 155, 0.1);
+}

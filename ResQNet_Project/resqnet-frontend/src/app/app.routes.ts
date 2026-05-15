@@ -16,6 +16,7 @@ import { ResqbotComponent } from './features/resqbot/resqbot';
 import { HomeComponent } from './features/home/home';
 import { AdminLayoutComponent } from './features/admin/admin-layout/admin-layout';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard';
+import { ProfileComponent } from './profile/profile';
 
 
 
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent },
 
   // Admin
   {

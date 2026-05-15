@@ -1,0 +1,109 @@
+<div class="page-container">
+    <div class="header">
+        <h2>👤 User Profile</h2>
+        <a routerLink="/dashboard" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <div class="profile-card">
+        <div class="alert-success" *ngIf="saveMessage">
+            ✅ {{ saveMessage }}
+        </div>
+
+        <div class="card-header">
+            <div class="avatar-circle">
+                <span class="initials">{{ profile.name ? (profile.name.charAt(0) | uppercase) : 'G' }}</span>
+            </div>
+            <div class="header-info">
+                <h3>{{ profile.name || 'Guest User' }}</h3>
+                <span class="badge" [ngClass]="{'volunteer': profile.isVolunteer, 'user': !profile.isVolunteer}">
+                    {{ profile.isVolunteer ? '🤝 Active Volunteer' : '👤 Citizen' }}
+                </span>
+            </div>
+
+            <button class="btn-edit" (click)="toggleEdit()" *ngIf="!isEditing && isLoggedIn">✏️ Edit Profile</button>
+        </div>
+
+        <div class="alert-warning" *ngIf="!isLoggedIn && !isLoading"
+            style="background: rgba(255,193,7,0.1); color: #ffc107; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 20px; border: 1px solid #ffc107;">
+            🔒 You must be logged in to edit your profile and emergency contacts.
+        </div>
+
+        <div class="card-body" [class.editing]="isEditing">
+
+            <div class="section">
+                <h4>Personal Information</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" [(ngModel)]="profile.name" [disabled]="!isEditing" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" [(ngModel)]="profile.phone" [disabled]="!isEditing" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h4>Medical Information</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Blood Group</label>
+                        <select [(ngModel)]="profile.bloodGroup" [disabled]="!isEditing">
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Allergies / Medical Conditions</label>
+                        <input type="text" [(ngModel)]="profile.medicalConditions" [disabled]="!isEditing"
+                            placeholder="e.g., Asthma, Diabetes" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h4>Emergency Contacts (For SOS)</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Primary Contact (Family)</label>
+                        <input type="text" [(ngModel)]="profile.emergencyContact1" [disabled]="!isEditing"
+                            placeholder="01XXXXXXXXX" />
+                    </div>
+                    <div class="form-group">
+                        <label>Secondary Contact</label>
+                        <input type="text" [(ngModel)]="profile.emergencyContact2" [disabled]="!isEditing"
+                            placeholder="01XXXXXXXXX" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h4>Preferences</h4>
+                <div class="form-group checkbox-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" [(ngModel)]="profile.isVolunteer" [disabled]="!isEditing" />
+                        Available as a Community Volunteer during disasters
+                    </label>
+                </div>
+            </div>
+
+            <div class="actions" *ngIf="isEditing">
+                <button class="btn-cancel" (click)="toggleEdit()">Cancel</button>
+                <button class="btn-save" (click)="saveProfile()">💾 Save Changes</button>
+            </div>
+
+
+            <div class="loading-state" *ngIf="isLoading">⏳ Syncing with server...</div>
+            <div class="alert-error" *ngIf="errorMessage">❌ {{ errorMessage }}</div>
+
+        </div>
+    </div>
+</div>
