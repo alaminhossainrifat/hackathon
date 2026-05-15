@@ -8,6 +8,7 @@ export interface Doctor {
   specialization: string;
   area: string;
   phone: string;
+  hospital: string,
   consultType: 'IN_PERSON' | 'ONLINE' | 'BOTH';
   available?: boolean;
 }

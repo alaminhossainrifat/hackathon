@@ -35,6 +35,10 @@
         <input [(ngModel)]="newDoctor.phone" placeholder="01XXXXXXXXX" />
       </div>
       <div class="form-group">
+        <label>Hospital Name</label>
+        <input [(ngModel)]="newDoctor.hospital" placeholder="Dhaka Medical College Hospital">
+      </div>
+      <div class="form-group">
         <label>Consult Type</label>
         <select [(ngModel)]="newDoctor.consultType">
           <option *ngFor="let t of consultTypes" [value]="t">{{ t }}</option>
@@ -59,6 +63,7 @@
       <p class="spec">🩺 {{ d.specialization }}</p>
       <p class="area">📍 {{ d.area }}</p>
       <p class="phone">📞 {{ d.phone }}</p>
+      <p class="phone">📞 {{ d.hospital }}</p>
       <button (click)="toggle(d)" class="btn-toggle">
         {{ d.available ? 'Mark Unavailable' : 'Mark Available' }}
       </button>

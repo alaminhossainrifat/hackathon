@@ -20,7 +20,7 @@ export class DoctorsComponent implements OnInit {
 
   newDoctor: Doctor = {
     name: '', specialization: '', area: '',
-    phone: '', consultType: 'BOTH'
+    phone: '', hospital: '', consultType: 'BOTH'
   };
 
   consultTypes = ['IN_PERSON', 'ONLINE', 'BOTH'];
@@ -28,7 +28,7 @@ export class DoctorsComponent implements OnInit {
   constructor(
     private doctorService: DoctorService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() { this.load(); }
 
@@ -77,6 +77,6 @@ export class DoctorsComponent implements OnInit {
   }
 
   resetForm() {
-    this.newDoctor = { name: '', specialization: '', area: '', phone: '', consultType: 'BOTH' };
+    this.newDoctor = { name: '', specialization: '', area: '', phone: '', hospital: '', consultType: 'BOTH' };
   }
 }
