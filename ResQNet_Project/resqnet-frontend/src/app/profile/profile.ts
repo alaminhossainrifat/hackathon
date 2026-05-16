@@ -18,6 +18,10 @@ export class ProfileComponent implements OnInit {
   saveMessage: string = '';
   errorMessage: string = '';
 
+  // Added variables to store and manage SOS history state
+  sosHistory: any[] = [];
+  isLoadingHistory: boolean = false;
+
   profile: UserProfile = {
     name: '',
     phone: '',
@@ -30,12 +34,17 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private cdr: ChangeDetectorRef // Added ChangeDetectorRef to force UI updates
-  ) {}
+    private cdr: ChangeDetectorRef // ChangeDetectorRef to force UI updates
+  ) { }
 
   ngOnInit() {
     this.isLoggedIn = !!localStorage.getItem('token');
     this.fetchProfile();
+
+    // Fetch the user's SOS history if they are logged in
+    if (this.isLoggedIn) {
+      this.loadHistory();
+    }
   }
 
   // Helper method to extract username/email from the JWT token
@@ -61,7 +70,7 @@ export class ProfileComponent implements OnInit {
         if (data) {
           this.profile = data;
         }
-        
+
         if (this.isLoggedIn && !this.profile.name) {
           this.profile.name = this.extractNameFromToken();
         }
@@ -71,13 +80,39 @@ export class ProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to load profile:', err);
-        
+
         if (this.isLoggedIn && !this.profile.name) {
           this.profile.name = this.extractNameFromToken();
         }
-        
+
         this.isLoading = false;
         this.cdr.detectChanges(); // Force UI update even on error
+      }
+    });
+  }
+
+  // NEW METHOD: Fetch SOS history with guaranteed loading state reset
+  loadHistory(event?: Event) {
+    if (event) {
+      event.preventDefault(); // Prevent the default button behavior
+    }
+
+    this.isLoadingHistory = true;
+    this.cdr.detectChanges();
+
+    this.profileService.getHistory().subscribe({
+      next: (data) => {
+        this.sosHistory = data || [];
+      },
+      error: (err) => {
+        console.error('Failed to load SOS history:', err);
+        this.sosHistory = [];
+      },
+      complete: () => {
+        // This block will always be called whether the request succeeds or fails,
+        // and it will stop the loading spinner
+        this.isLoadingHistory = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -100,9 +135,9 @@ export class ProfileComponent implements OnInit {
         this.isEditing = false;
         this.isLoading = false;
         this.saveMessage = 'Profile updated successfully!';
-        
+
         this.cdr.detectChanges(); // Force UI update to show success message and hide spinner
-        
+
         // Hide success message after 3 seconds
         setTimeout(() => {
           this.saveMessage = '';

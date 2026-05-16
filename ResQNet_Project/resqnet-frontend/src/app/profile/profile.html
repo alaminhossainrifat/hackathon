@@ -106,4 +106,36 @@
 
         </div>
     </div>
+    <div class="profile-card" style="margin-top: 20px;" *ngIf="isLoggedIn">
+        <div class="card-header" style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3>🚨 Your SOS History</h3>
+            <button type="button" class="btn-refresh" (click)="loadHistory($event)" style="padding: 5px 10px; background: #f0f0f0; border: none; border-radius: 5px; cursor: pointer; color: #333;">
+    🔄 Refresh
+</button>
+        </div>
+
+        <div class="loading-state" *ngIf="isLoadingHistory">⏳ Loading history...</div>
+
+        <div class="history-list" *ngIf="!isLoadingHistory">
+            <div *ngIf="sosHistory.length === 0" style="text-align: center; color: #666; padding: 20px;">
+                You have not triggered any SOS alerts yet.
+            </div>
+
+            <div class="history-item" *ngFor="let alert of sosHistory"
+                style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #dc3545;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <strong>{{ alert.createdAt | date:'medium' }}</strong>
+                    <span class="badge"
+                        [ngStyle]="{'background-color': alert.status === 'ACTIVE' ? '#dc3545' : '#28a745', 'color': 'white', 'padding': '3px 8px', 'border-radius': '12px', 'font-size': '0.8em'}">
+                        {{ alert.status }}
+                    </span>
+                </div>
+                <p style="margin: 5px 0;"><strong>Message:</strong> {{ alert.message || 'No message provided' }}</p>
+                <p style="margin: 5px 0; font-size: 0.9em; color: #555;">
+                    📍 Location: {{ alert.latitude | number:'1.4-4' }}, {{ alert.longitude | number:'1.4-4' }}
+                </p>
+            </div>
+        </div>
+    </div>
+
 </div>

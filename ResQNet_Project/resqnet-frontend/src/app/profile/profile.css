@@ -332,6 +332,87 @@ select:disabled {
     font-weight: 600;
 }
 
+
+/* ===== EMPTY STATE ===== */
+
+.history-list div[style*="text-align: center"] {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 18px;
+    color: #94a3b8 !important;
+    padding: 30px !important;
+    font-size: 15px;
+}
+
+/* ===== HISTORY ITEM ===== */
+
+.history-item {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 5px solid #ef4444 !important;
+    border-radius: 18px !important;
+    padding: 22px !important;
+    margin-bottom: 18px !important;
+    transition: 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.history-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59,130,246,0.25);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+/* ===== TOP ROW ===== */
+
+.history-item > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px !important;
+}
+
+/* ===== DATE ===== */
+
+.history-item strong {
+    color: white;
+    font-size: 15px;
+}
+
+/* ===== STATUS BADGE ===== */
+
+.history-item .badge {
+    padding: 6px 12px !important;
+    border-radius: 999px !important;
+    font-size: 12px !important;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ===== MESSAGE ===== */
+
+.history-item p {
+    margin: 8px 0 !important;
+    color: #dbeafe;
+    line-height: 1.6;
+}
+
+.history-item p strong {
+    color: white;
+}
+
+/* ===== LOCATION ===== */
+
+.history-item p:last-child {
+    font-size: 14px !important;
+    color: #94a3b8 !important;
+    margin-top: 12px !important;
+}
+
+
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 768px) {
