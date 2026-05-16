@@ -54,15 +54,15 @@
   <div class="success-card" *ngIf="successAlert">
     <h3>✅ SOS Sent Successfully!</h3>
     <div class="response-grid">
-      <div class="response-item" *ngIf="successAlert.nearestAmbulance">
+      <div class="response-item" *ngIf="successAlert.nearest?.ambulanceArea">
         <h4>🚑 Nearest Ambulance</h4>
-        <p>{{ successAlert.nearestAmbulance.area }}</p>
-        <p>📞 {{ successAlert.nearestAmbulance.driverPhone }}</p>
+        <p>{{ successAlert.nearest.ambulanceArea }}</p>
+        <p>📞 {{ successAlert.nearest.ambulancePhone }}</p>
       </div>
-      <div class="response-item" *ngIf="successAlert.nearestSafeZone">
+      <div class="response-item" *ngIf="successAlert.nearest?.safeZoneName">
         <h4>🏠 Nearest Safe Zone</h4>
-        <p>{{ successAlert.nearestSafeZone.name }}</p>
-        <p>📍 {{ successAlert.nearestSafeZone.address }}</p>
+        <p>{{ successAlert.nearest.safeZoneName }}</p>
+        <p>📍 {{ successAlert.nearest.safeZoneAddress }}</p>
       </div>
     </div>
   </div>

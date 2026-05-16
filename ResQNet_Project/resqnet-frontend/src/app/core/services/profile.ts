@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface UserProfile {
   id?: number;
+  userId?: number;
   name: string;
   phone: string;
   bloodGroup: string;
@@ -20,23 +21,20 @@ export interface UserProfile {
 export class ProfileService {
   private apiUrl = `${environment.apiUrl}/profile`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
- // Function to add token to header
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
-
-  // GET 
+  // Fetch profile. The JWT interceptor automatically attaches the Bearer token.
   getProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(this.apiUrl);
   }
 
-  // PUT Secured, so headers must be sent
+  // Update profile. The JWT interceptor automatically attaches the Bearer token.
   updateProfile(profile: UserProfile): Observable<UserProfile> {
-    return this.http.put<UserProfile>(this.apiUrl, profile, { headers: this.getAuthHeaders() });
+    return this.http.put<UserProfile>(this.apiUrl, profile);
+  }
+
+  // Fetch SOS history for the dynamically authenticated user
+  getHistory(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/history`);
   }
 }

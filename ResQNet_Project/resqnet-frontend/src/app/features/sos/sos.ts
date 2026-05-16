@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SosService, SosRequest, SosAlert } from '../../core/services/sos';
+import { SosService, SosRequest, SosAlert, SosResponse } from '../../core/services/sos';
 
 @Component({
   selector: 'app-sos',
@@ -16,7 +16,9 @@ export class SosComponent implements OnInit {
   loading = false;
   triggering = false;
   error = '';
-  successAlert: SosAlert | null = null;
+  
+  // Updated to use the new SosResponse DTO
+  successAlert: SosResponse | null = null;
   showForm = false;
   
   // Dynamic UI field for the mock Twilio SMS
@@ -59,7 +61,7 @@ export class SosComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => {
-        this.error = 'Failed to load';
+        this.error = 'Failed to load active alerts';
         this.loading = false;
         this.cdr.detectChanges();
       }
@@ -75,7 +77,7 @@ export class SosComponent implements OnInit {
     alert('🚨 SOS Protocol Initiated!\nFetching GPS coordinates and preparing Twilio SMS...');
 
     this.sosService.trigger(this.sosRequest).subscribe({
-      next: (res) => {
+      next: (res: SosResponse) => {
         this.successAlert = res;
         this.triggering = false;
         this.showForm = false;
@@ -93,7 +95,7 @@ export class SosComponent implements OnInit {
         }, 2000);
       },
       error: () => {
-        this.error = 'Failed to trigger SOS';
+        this.error = 'Failed to trigger SOS. Make sure you are logged in.';
         this.triggering = false;
         this.cdr.detectChanges();
       }
@@ -101,9 +103,11 @@ export class SosComponent implements OnInit {
   }
 
   resolve(alert: SosAlert) {
-    this.sosService.resolve(alert.id!).subscribe(() => {
-      this.loadActive();
-    });
+    if (alert.id) {
+      this.sosService.resolve(alert.id).subscribe(() => {
+        this.loadActive();
+      });
+    }
   }
 
   resetForm() {
