@@ -14,6 +14,9 @@ public class SosAlert {
     private Long id;
 
     @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
     private String senderName;
 
     @Column(nullable = false)

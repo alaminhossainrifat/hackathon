@@ -10,4 +10,6 @@ import java.util.List;
 public interface SosAlertRepository extends JpaRepository<SosAlert, Long> {
     List<SosAlert> findByStatus(SosAlert.SosStatus status);
     List<SosAlert> findBySenderPhone(String senderPhone);
+    // Fetch all SOS alerts for a specific user ID
+    List<SosAlert> findByUserIdOrderByCreatedAtDesc(Long userId);
 }

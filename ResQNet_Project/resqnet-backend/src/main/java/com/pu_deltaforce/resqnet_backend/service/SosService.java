@@ -1,14 +1,15 @@
 package com.pu_deltaforce.resqnet_backend.service;
 
-
 import com.pu_deltaforce.resqnet_backend.dto.SosRequest;
 import com.pu_deltaforce.resqnet_backend.dto.SosResponse;
 import com.pu_deltaforce.resqnet_backend.model.Ambulance;
 import com.pu_deltaforce.resqnet_backend.model.SafeZone;
 import com.pu_deltaforce.resqnet_backend.model.SosAlert;
+import com.pu_deltaforce.resqnet_backend.model.User;
 import com.pu_deltaforce.resqnet_backend.repository.AmbulanceRepository;
 import com.pu_deltaforce.resqnet_backend.repository.SafeZoneRepository;
 import com.pu_deltaforce.resqnet_backend.repository.SosAlertRepository;
+import com.pu_deltaforce.resqnet_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +23,28 @@ public class SosService {
     private final AmbulanceRepository ambulanceRepository;
     private final SafeZoneRepository safeZoneRepository;
     private final WebSocketService webSocketService;
+    private final UserRepository userRepository; // Added for dynamic user search
 
-    public SosResponse triggerSos(SosRequest request) {
+    public SosResponse triggerSos(SosRequest request, String email) {
+
+        // Finding users from database by email
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
 
         // SOS save
         SosAlert sos = new SosAlert();
+        sos.setUserId(user.getId()); // User's dynamic ID set.
         sos.setSenderName(request.getSenderName());
         sos.setSenderPhone(request.getSenderPhone());
         sos.setLatitude(request.getLatitude());
         sos.setLongitude(request.getLongitude());
         sos.setMessage(request.getMessage());
         SosAlert saved = sosRepository.save(sos);
-        webSocketService.broadcastSosAlert(saved);
+
+        // WebSocket Broadcast
+        if(webSocketService != null) {
+            webSocketService.broadcastSosAlert(saved);
+        }
 
         // Find the nearest ambulance
         List<Ambulance> ambulances = ambulanceRepository

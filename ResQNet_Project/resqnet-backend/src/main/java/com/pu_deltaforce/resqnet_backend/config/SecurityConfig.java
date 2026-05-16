@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 "/api/sos/active",
                                 "/api/ambulances"
                         ).permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/profile/**").permitAll()
+//                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/profile/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
