@@ -1,6 +1,7 @@
 package com.pu_deltaforce.resqnet_backend.service;
 
 import com.pu_deltaforce.resqnet_backend.dto.AdminMetricsDTO;
+import com.pu_deltaforce.resqnet_backend.dto.UserDTO;
 import com.pu_deltaforce.resqnet_backend.model.SosAlert;
 import com.pu_deltaforce.resqnet_backend.model.User;
 import com.pu_deltaforce.resqnet_backend.repository.SafeZoneRepository;
@@ -8,6 +9,9 @@ import com.pu_deltaforce.resqnet_backend.repository.SosAlertRepository;
 import com.pu_deltaforce.resqnet_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +31,36 @@ public class AdminService {
         metrics.setTotalActiveSafeZones(safeZoneRepository.countByAvailableTrue());
 
         return metrics;
+    }
+// --- User Management ---
+
+    // 1. Get the list of all users
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // 2. Update the role of a user
+    public UserDTO updateUserRole(Long userId, User.Role newRole) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        user.setRole(newRole);
+        User updatedUser = userRepository.save(user);
+
+        return mapToDTO(updatedUser);
+    }
+
+    // Helper Method: Convert User entity to UserDTO
+    private UserDTO mapToDTO(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPhone(user.getPhone());
+        dto.setRole(user.getRole());
+        return dto;
     }
 }
