@@ -10,4 +10,7 @@ import java.util.List;
 public interface SafeZoneRepository extends JpaRepository<SafeZone, Long> {
     List<SafeZone> findByAvailableTrue();
     List<SafeZone> findByZoneTypeAndAvailableTrue(SafeZone.ZoneType zoneType);
+
+    // Count total active/available safe zones
+    long countByAvailableTrue();
 }

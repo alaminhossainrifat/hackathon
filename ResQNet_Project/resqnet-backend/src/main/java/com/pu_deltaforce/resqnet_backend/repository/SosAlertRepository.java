@@ -12,4 +12,7 @@ public interface SosAlertRepository extends JpaRepository<SosAlert, Long> {
     List<SosAlert> findBySenderPhone(String senderPhone);
     // Fetch all SOS alerts for a specific user ID
     List<SosAlert> findByUserIdOrderByCreatedAtDesc(Long userId);
+
+    // Count SOS alerts based on their current status
+    long countByStatus(SosAlert.SosStatus status);
 }
