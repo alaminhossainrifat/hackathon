@@ -25,9 +25,10 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<UserProfile> getProfile() {
-        User currentUser = getAuthenticatedUser(); // Method Call
+        User currentUser = getAuthenticatedUser();
 
-        return profileRepository.findById(currentUser.getId())
+        // Using findByUserId instead of findById to fetch the specific user's profile
+        return profileRepository.findByUserId(currentUser.getId())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
     }
@@ -36,8 +37,19 @@ public class ProfileController {
     public ResponseEntity<UserProfile> updateProfile(@RequestBody UserProfile updatedProfile) {
         User currentUser = getAuthenticatedUser();
 
-        // Set profile ID according to the user ID
-        updatedProfile.setId(currentUser.getId());
+        // Check if a profile already exists for this authenticated user
+        UserProfile existingProfile = profileRepository.findByUserId(currentUser.getId()).orElse(null);
+
+        if (existingProfile == null) {
+            // For a new profile, set ID to null so the database generates it automatically
+            updatedProfile.setId(null);
+        } else {
+            // For an existing profile, keep the original ID to update the same record
+            updatedProfile.setId(existingProfile.getId());
+        }
+
+        // Link the logged-in user's ID to the profile's 'userId' field
+        updatedProfile.setUserId(currentUser.getId());
 
         UserProfile savedProfile = profileRepository.save(updatedProfile);
         return ResponseEntity.ok(savedProfile);
@@ -47,7 +59,7 @@ public class ProfileController {
     public ResponseEntity<List<SosAlert>> getUserHistory() {
         User currentUser = getAuthenticatedUser();
 
-        // Find User History
+        // Fetch SOS history specific to the authenticated user
         List<SosAlert> history = sosRepository.findByUserIdOrderByCreatedAtDesc(currentUser.getId());
         return ResponseEntity.ok(history);
     }
