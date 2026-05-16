@@ -30,20 +30,22 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/api/health",
-                                "/ws/**",
-                                "/api/disasters",
-                                "/api/safezones",
-                                "/api/resqbot/chat",
-                                "/api/proxy/**",
-                                "/api/sos/active",
-                                "/api/ambulances"
-                        ).permitAll()
+                                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers(
+                                        "/api/auth/**",
+                                        "/api/health",
+                                        "/ws/**",
+                                        "/api/disasters",
+                                        "/api/safezones",
+                                        "/api/resqbot/chat",
+                                        "/api/proxy/**",
+                                        "/api/sos/active",
+                                        "/api/ambulances"
+                                ).permitAll()
 //                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/profile/**").permitAll()
-                        .anyRequest().authenticated()
+                                // Only  ADMIN role can access these endpoint
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
