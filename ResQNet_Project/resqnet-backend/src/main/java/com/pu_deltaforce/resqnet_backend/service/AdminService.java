@@ -63,4 +63,25 @@ public class AdminService {
         dto.setRole(user.getRole());
         return dto;
     }
+
+    // --- SOS Command Center ---
+
+    // 1. Fetch all SOS alerts (newest alerts first)
+    public List<SosAlert> getAllSosAlerts() {
+        return sosAlertRepository.findAll(
+                org.springframework.data.domain.Sort.by(
+                        org.springframework.data.domain.Sort.Direction.DESC,
+                        "createdAt"
+                )
+        );
+    }
+
+    // 2. Update the status of a specific SOS alert (from ACTIVE to RESOLVED)
+    public SosAlert updateSosStatus(Long sosId, SosAlert.SosStatus newStatus) {
+        SosAlert alert = sosAlertRepository.findById(sosId)
+                .orElseThrow(() -> new RuntimeException("SOS Alert not found with id: " + sosId));
+
+        alert.setStatus(newStatus);
+        return sosAlertRepository.save(alert);
+    }
 }

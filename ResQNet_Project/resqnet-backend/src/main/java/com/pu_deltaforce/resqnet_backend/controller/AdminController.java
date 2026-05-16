@@ -2,6 +2,7 @@ package com.pu_deltaforce.resqnet_backend.controller;
 
 import com.pu_deltaforce.resqnet_backend.dto.AdminMetricsDTO;
 import com.pu_deltaforce.resqnet_backend.dto.UserDTO;
+import com.pu_deltaforce.resqnet_backend.model.SosAlert;
 import com.pu_deltaforce.resqnet_backend.model.User;
 import com.pu_deltaforce.resqnet_backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,21 @@ public class AdminController {
             @PathVariable Long id,
             @RequestParam User.Role role) {
         return ResponseEntity.ok(adminService.updateUserRole(id, role));
+    }
+
+    // --- SOS Command Center Endpoints ---
+
+    // Get all SOS alerts
+    @GetMapping("/sos")
+    public ResponseEntity<List<SosAlert>> getAllSosAlerts() {
+        return ResponseEntity.ok(adminService.getAllSosAlerts());
+    }
+
+    // Update the status of a specific SOS alert
+    @PutMapping("/sos/{id}/status")
+    public ResponseEntity<SosAlert> updateSosStatus(
+            @PathVariable Long id,
+            @RequestParam SosAlert.SosStatus status) {
+        return ResponseEntity.ok(adminService.updateSosStatus(id, status));
     }
 }
