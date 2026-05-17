@@ -1,0 +1,72 @@
+<div class="dashboard-content">
+  <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>🚨 Disaster Management</h2>
+    <button class="action-btn" (click)="showForm = !showForm" style="background-color: #e94560; color: white; padding: 10px 15px; border-radius: 5px; border: none; cursor: pointer;">
+      {{ showForm ? 'Cancel' : '+ Broadcast New Alert' }}
+    </button>
+  </div>
+
+  <div class="form-card" *ngIf="showForm" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;">
+    <h3>Broadcast Emergency Alert</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+      <input type="text" [(ngModel)]="newDisaster.title" placeholder="Alert Title (e.g., Flash Flood Warning)" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      <input type="text" [(ngModel)]="newDisaster.location" placeholder="Affected Location" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      
+      <select [(ngModel)]="newDisaster.alertType" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        <option value="FLOOD">Flood</option>
+        <option value="CYCLONE">Cyclone</option>
+        <option value="EARTHQUAKE">Earthquake</option>
+        <option value="FIRE">Fire</option>
+        <option value="OTHER">Other</option>
+      </select>
+
+      <select [(ngModel)]="newDisaster.severity" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        <option value="LOW">Low</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="HIGH">High</option>
+        <option value="CRITICAL">Critical</option>
+      </select>
+    </div>
+    <textarea [(ngModel)]="newDisaster.description" placeholder="Emergency instructions and description..." style="width: 100%; padding: 10px; margin-top: 15px; border: 1px solid #ddd; border-radius: 4px; height: 80px;"></textarea>
+    
+    <button (click)="submitDisaster()" style="margin-top: 15px; background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+      🚀 Publish Alert
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="admin-table" style="width: 100%; text-align: left; background: white; border-radius: 8px; overflow: hidden;">
+      <thead style="background: #f8f9fa;">
+        <tr>
+          <th style="padding: 12px;">Type & Severity</th>
+          <th style="padding: 12px;">Title</th>
+          <th style="padding: 12px;">Location</th>
+          <th style="padding: 12px;">Date</th>
+          <th style="padding: 12px;">Status</th>
+          <th style="padding: 12px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of disasters" style="border-bottom: 1px solid #eee;">
+          <td style="padding: 12px;">
+            <strong>{{ d.alertType }}</strong><br>
+            <span style="font-size: 0.8em; color: #dc3545;">{{ d.severity }}</span>
+          </td>
+          <td style="padding: 12px;">{{ d.title }}</td>
+          <td style="padding: 12px;">{{ d.location }}</td>
+          <td style="padding: 12px;">{{ d.createdAt | date:'short' }}</td>
+          <td style="padding: 12px;">
+            <span [ngStyle]="{'background': d.active ? '#ffebee' : '#e8f5e9', 'color': d.active ? '#d32f2f' : '#2e7d32', 'padding': '4px 8px', 'border-radius': '12px', 'font-size': '0.85em'}">
+              {{ d.active ? 'ACTIVE' : 'RESOLVED' }}
+            </span>
+          </td>
+          <td style="padding: 12px;">
+            <button (click)="toggleStatus(d)" style="padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;" [ngStyle]="{'background': d.active ? '#6c757d' : '#28a745', 'color': 'white'}">
+              {{ d.active ? 'Deactivate' : 'Activate' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

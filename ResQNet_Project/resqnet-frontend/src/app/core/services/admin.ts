@@ -33,6 +33,19 @@ export interface SosAlert {
   createdAt: string;
 }
 
+export interface DisasterAlert {
+  id?: number;
+  title: string;
+  description: string;
+  alertType: 'FLOOD' | 'CYCLONE' | 'EARTHQUAKE' | 'FIRE' | 'OTHER';
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  location: string;
+  latitude?: number;
+  longitude?: number;
+  active?: boolean;
+  createdAt?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -71,5 +84,24 @@ export class AdminService {
     return this.http.put<SosAlert>(`${this.apiUrl}/sos/${sosId}/status`, null, {
       params: { status: status }
     });
+  }
+
+  // --- Admin Disaster Management ---
+  private disasterApiUrl = `${environment.apiUrl}/disasters`;
+
+  getAllDisasters(): Observable<DisasterAlert[]> {
+    return this.http.get<DisasterAlert[]>(this.disasterApiUrl);
+  }
+
+  createDisaster(data: DisasterAlert): Observable<DisasterAlert> {
+    return this.http.post<DisasterAlert>(this.disasterApiUrl, data);
+  }
+
+  deactivateDisaster(id: number): Observable<any> {
+    return this.http.put(`${this.disasterApiUrl}/${id}/deactivate`, {});
+  }
+
+  activateDisaster(id: number): Observable<any> {
+    return this.http.put(`${this.disasterApiUrl}/${id}/activate`, {});
   }
 }

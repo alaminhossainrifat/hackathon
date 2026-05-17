@@ -1,0 +1,257 @@
+/* =========================
+   RESQNET DISASTER DASHBOARD
+========================= */
+
+.dashboard-content {
+    padding: 30px;
+    background: linear-gradient(135deg, #0f172a, #151933);
+    min-height: 100vh;
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===== HEADER ===== */
+
+.table-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 28px !important;
+}
+
+.table-header h2 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 700;
+    color: white;
+}
+
+/* ===== BUTTON ===== */
+
+.action-btn {
+    background: linear-gradient(135deg, #e94560, #ff4d6d) !important;
+    color: white !important;
+    border: none !important;
+    padding: 13px 22px !important;
+    border-radius: 14px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(233,69,96,0.25);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+/* ===== FORM CARD ===== */
+
+.form-card {
+    background: rgba(22,33,62,0.95) !important;
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 24px !important;
+    padding: 30px !important;
+    margin-bottom: 28px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.form-card h3 {
+    margin-top: 0;
+    margin-bottom: 22px;
+    font-size: 26px;
+    color: white;
+}
+
+/* ===== FORM GRID ===== */
+
+.form-card > div {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 18px !important;
+}
+
+/* ===== INPUTS ===== */
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white;
+    padding: 14px 16px !important;
+    border-radius: 14px !important;
+    outline: none;
+    font-size: 15px;
+    transition: 0.25s ease;
+    box-sizing: border-box;
+}
+
+.form-card textarea {
+    min-height: 120px;
+    resize: vertical;
+    margin-top: 18px !important;
+}
+
+.form-card input::placeholder,
+.form-card textarea::placeholder {
+    color: #94a3b8;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+    border-color: #3b82f6;
+    background: rgba(255,255,255,0.07);
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+}
+
+/* ===== SELECT OPTION ===== */
+
+.form-card select {
+    appearance: none;
+}
+
+/* ===== PUBLISH BUTTON ===== */
+
+.form-card button {
+    margin-top: 22px !important;
+    background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+    color: white !important;
+    border: none !important;
+    padding: 14px 24px !important;
+    border-radius: 14px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(34,197,94,0.25);
+}
+
+.form-card button:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== TABLE CONTAINER ===== */
+
+.table-container {
+    background: rgba(22,33,62,0.95);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(59,130,246,0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* ===== TABLE ===== */
+
+.admin-table {
+    width: 100% !important;
+    border-collapse: collapse;
+    background: transparent !important;
+    color: white;
+}
+
+/* ===== TABLE HEAD ===== */
+
+.admin-table thead {
+    background: rgba(255,255,255,0.04) !important;
+}
+
+.admin-table th {
+    padding: 18px 16px !important;
+    font-size: 14px;
+    font-weight: 700;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ===== TABLE BODY ===== */
+
+.admin-table td {
+    padding: 18px 16px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    color: #f1f5f9;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr {
+    transition: 0.25s ease;
+}
+
+.admin-table tbody tr:hover {
+    background: rgba(59,130,246,0.08);
+}
+
+/* ===== SEVERITY ===== */
+
+.admin-table td span {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px !important;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+/* ===== STATUS BADGE ===== */
+
+.admin-table td span[ngstyle] {
+    padding: 6px 12px !important;
+    border-radius: 999px !important;
+}
+
+/* ===== ACTION BUTTON ===== */
+
+.admin-table button {
+    border: none !important;
+    padding: 10px 16px !important;
+    border-radius: 12px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.admin-table button:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 992px) {
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        min-width: 850px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table-header h2 {
+        font-size: 28px;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+
+    .form-card {
+        padding: 22px !important;
+    }
+}
