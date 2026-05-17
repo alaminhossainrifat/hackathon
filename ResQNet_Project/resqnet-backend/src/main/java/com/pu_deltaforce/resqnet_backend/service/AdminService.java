@@ -25,8 +25,9 @@ public class AdminService {
         AdminMetricsDTO metrics = new AdminMetricsDTO();
 
         metrics.setTotalUsers(userRepository.count());
-        metrics.setTotalVolunteers(userRepository.countByRole(User.Role.VOLUNTEER));
-        metrics.setTotalVolunteers(userRepository.countByRole(User.Role.DOCTOR));
+//        metrics.setTotalVolunteers(userRepository.countByRole(User.Role.VOLUNTEER));
+//        metrics.setTotalVolunteers(userRepository.countByRole(User.Role.DOCTOR));
+        metrics.setTotalVolunteers(userRepository.countVolunteers());
         metrics.setTotalActiveSos(sosAlertRepository.countByStatus(SosAlert.SosStatus.ACTIVE));
         metrics.setTotalActiveSafeZones(safeZoneRepository.countByAvailableTrue());
 
