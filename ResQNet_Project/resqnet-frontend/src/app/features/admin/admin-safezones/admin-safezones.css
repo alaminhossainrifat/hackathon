@@ -1,0 +1,303 @@
+/* =========================
+   RESQNET SAFE ZONE PANEL
+========================= */
+
+.dashboard-content {
+    min-height: 100vh;
+    padding: 30px;
+    background: linear-gradient(135deg, #0f172a, #151933);
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===== HEADER ===== */
+
+.table-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 28px !important;
+}
+
+.table-header h2 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 700;
+    color: white;
+}
+
+/* ===== TOP BUTTON ===== */
+
+.action-btn {
+    background: linear-gradient(135deg, #00b09b, #00c9a7) !important;
+    color: white !important;
+    border: none !important;
+    padding: 13px 22px !important;
+    border-radius: 16px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,176,155,0.25);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+
+.form-card {
+    background: rgba(22,33,62,0.96) !important;
+    border: 1px solid rgba(0,176,155,0.15);
+    border-radius: 26px !important;
+    padding: 32px !important;
+    margin-bottom: 28px !important;
+    backdrop-filter: blur(12px);
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.form-card h3 {
+    margin: 0 0 25px;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    padding-left: 18px;
+}
+
+.form-card h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 6px;
+    height: 30px;
+    border-radius: 20px;
+    background: linear-gradient(#00b09b, #00c9a7);
+}
+
+/* ===== GRID ===== */
+
+.form-card > div {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 20px !important;
+    margin-top: 20px !important;
+}
+
+/* ===== INPUTS ===== */
+
+.form-card input,
+.form-card select {
+    width: 100%;
+    padding: 15px 18px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.04) !important;
+    color: white !important;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+.form-card input::placeholder {
+    color: #94a3b8;
+}
+
+.form-card input:focus,
+.form-card select:focus {
+    border-color: #00c9a7 !important;
+    background: rgba(255,255,255,0.06) !important;
+    box-shadow: 0 0 0 4px rgba(0,201,167,0.12);
+}
+
+/* ===== SELECT ===== */
+
+.form-card select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.form-card option {
+    background: #16213e;
+    color: white;
+}
+
+/* ===== BUTTON ===== */
+
+.form-card button {
+    margin-top: 24px !important;
+    background: linear-gradient(135deg, #00b09b, #00c9a7) !important;
+    color: white !important;
+    border: none !important;
+    padding: 14px 24px !important;
+    border-radius: 16px !important;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,176,155,0.25);
+}
+
+.form-card button:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-container {
+    background: rgba(22,33,62,0.96);
+    border-radius: 26px;
+    overflow: hidden;
+    border: 1px solid rgba(0,176,155,0.15);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+}
+
+.admin-table {
+    width: 100% !important;
+    border-collapse: collapse;
+    background: transparent !important;
+    color: white;
+}
+
+/* ===== TABLE HEAD ===== */
+
+.admin-table thead {
+    background: rgba(255,255,255,0.04) !important;
+}
+
+.admin-table th {
+    padding: 18px 16px !important;
+    font-size: 13px;
+    font-weight: 700;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ===== TABLE BODY ===== */
+
+.admin-table td {
+    padding: 18px 16px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    vertical-align: middle;
+    color: #f1f5f9;
+}
+
+.admin-table tbody tr {
+    transition: 0.25s ease;
+}
+
+.admin-table tbody tr:hover {
+    background: rgba(0,176,155,0.08);
+}
+
+/* ===== ZONE TYPE ===== */
+
+.admin-table td span {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px !important;
+    font-weight: 600;
+}
+
+/* ===== OCCUPANCY INPUT ===== */
+
+.admin-table input[type="number"] {
+    width: 90px !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.05) !important;
+    color: white !important;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+.admin-table input[type="number"]:focus {
+    border-color: #00c9a7 !important;
+    box-shadow: 0 0 0 4px rgba(0,201,167,0.12);
+}
+
+/* ===== ACTION BUTTON ===== */
+
+.admin-table button {
+    border: none !important;
+    padding: 10px 16px !important;
+    border-radius: 12px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.admin-table button:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+/* ===== STATUS BADGE ===== */
+
+.admin-table td span[ngstyle] {
+    padding: 6px 12px !important;
+    border-radius: 999px !important;
+    font-size: 12px !important;
+    font-weight: 700;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 992px) {
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        min-width: 950px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table-header h2 {
+        font-size: 28px;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+
+    .form-card {
+        padding: 22px !important;
+    }
+
+    .form-card > div {
+        grid-template-columns: 1fr !important;
+    }
+
+    .form-card button {
+        width: 100%;
+    }
+}

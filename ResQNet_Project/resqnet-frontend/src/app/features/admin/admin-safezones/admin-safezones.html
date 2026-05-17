@@ -1,0 +1,74 @@
+<div class="dashboard-content">
+  <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>🏠 Safe Zones Management</h2>
+    <button class="action-btn" (click)="showForm = !showForm" style="background-color: #00b09b; color: white; padding: 10px 15px; border-radius: 5px; border: none; cursor: pointer;">
+      {{ showForm ? 'Cancel' : '+ Add New Safe Zone' }}
+    </button>
+  </div>
+
+  <div class="form-card" *ngIf="showForm" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;">
+    <h3>Register New Safe Zone</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+      <input type="text" [(ngModel)]="newZone.name" placeholder="Safe Zone Name (e.g., Banani School)" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      <input type="text" [(ngModel)]="newZone.address" placeholder="Full Address" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      
+      <select [(ngModel)]="newZone.zoneType" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        <option value="SHELTER">Shelter</option>
+        <option value="HOSPITAL">Hospital</option>
+        <option value="SCHOOL">School</option>
+        <option value="MOSQUE">Mosque</option>
+        <option value="OTHER">Other</option>
+      </select>
+
+      <input type="number" [(ngModel)]="newZone.capacity" placeholder="Total Capacity (e.g., 500)" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      <input type="number" [(ngModel)]="newZone.latitude" placeholder="Latitude" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      <input type="number" [(ngModel)]="newZone.longitude" placeholder="Longitude" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+    </div>
+    
+    <button (click)="submitSafeZone()" style="margin-top: 15px; background: #00b09b; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+      ✅ Add Safe Zone
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="admin-table" style="width: 100%; text-align: left; background: white; border-radius: 8px; overflow: hidden;">
+      <thead style="background: #f8f9fa;">
+        <tr>
+          <th style="padding: 12px;">Name & Type</th>
+          <th style="padding: 12px;">Address</th>
+          <th style="padding: 12px;">Capacity / Occupancy</th>
+          <th style="padding: 12px;">Status</th>
+          <th style="padding: 12px;">Update Occupancy</th>
+          <th style="padding: 12px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let zone of safeZones" style="border-bottom: 1px solid #eee;">
+          <td style="padding: 12px;">
+            <strong>{{ zone.name }}</strong><br>
+            <span style="font-size: 0.8em; color: #666;">{{ zone.zoneType }}</span>
+          </td>
+          <td style="padding: 12px;">{{ zone.address }}</td>
+          <td style="padding: 12px;">
+            <strong>{{ zone.currentOccupancy }}</strong> / {{ zone.capacity }}
+          </td>
+          <td style="padding: 12px;">
+            <span [ngStyle]="{'background': zone.available ? '#e8f5e9' : '#ffebee', 'color': zone.available ? '#2e7d32' : '#d32f2f', 'padding': '4px 8px', 'border-radius': '12px', 'font-size': '0.85em'}">
+              {{ zone.available ? 'AVAILABLE' : 'FULL / CLOSED' }}
+            </span>
+          </td>
+          <td style="padding: 12px;">
+            <input type="number" [value]="zone.currentOccupancy" (change)="updateOccupancy(zone, $event)" 
+                   style="width: 60px; padding: 4px; border: 1px solid #ccc; border-radius: 4px;" title="Change and press Enter/Click outside">
+          </td>
+          <td style="padding: 12px;">
+            <button (click)="toggleAvailability(zone)" style="padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;" 
+                    [ngStyle]="{'background': zone.available ? '#dc3545' : '#28a745', 'color': 'white'}">
+              {{ zone.available ? 'Mark Closed' : 'Mark Available' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

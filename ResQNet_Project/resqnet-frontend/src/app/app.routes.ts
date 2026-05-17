@@ -20,6 +20,7 @@ import { ProfileComponent } from './profile/profile';
 import { adminGuard } from './core/guards/admin-guard';
 import { AdminUsersComponent } from './features/admin/admin-users/admin-users';
 import { AdminDisastersComponent } from './features/admin/admin-disasters/admin-disasters';
+import { AdminSafezonesComponent } from './features/admin/admin-safezones/admin-safezones';
 
 
 
@@ -39,7 +40,8 @@ export const routes: Routes = [
       { path: '', component: AdminDashboardComponent },
       // NEW: Users management route
       { path: 'users', component: AdminUsersComponent },
-      { path: 'disasters', component: AdminDisastersComponent }
+      { path: 'disasters', component: AdminDisastersComponent },
+      { path: 'safezones', component: AdminSafezonesComponent }
     ]
   },
 

@@ -46,13 +46,25 @@ export interface DisasterAlert {
   createdAt?: string;
 }
 
+export interface SafeZone {
+  id?: number;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  zoneType: 'SHELTER' | 'HOSPITAL' | 'SCHOOL' | 'MOSQUE' | 'OTHER';
+  capacity: number;
+  currentOccupancy?: number;
+  available?: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
   private apiUrl = `${environment.apiUrl}/admin`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // --- Dashboard Metrics ---
   // Fetches aggregated system statistics
@@ -103,5 +115,26 @@ export class AdminService {
 
   activateDisaster(id: number): Observable<any> {
     return this.http.put(`${this.disasterApiUrl}/${id}/activate`, {});
+  }
+
+  // --- Admin Safe Zone Management ---
+  private safeZoneApiUrl = `${environment.apiUrl}/safezones`;
+
+  getSafeZones(): Observable<SafeZone[]> {
+    return this.http.get<SafeZone[]>(this.safeZoneApiUrl);
+  }
+
+  createSafeZone(data: SafeZone): Observable<SafeZone> {
+    return this.http.post<SafeZone>(this.safeZoneApiUrl, data);
+  }
+
+  updateSafeZoneOccupancy(id: number, occupancy: number): Observable<SafeZone> {
+    return this.http.put<SafeZone>(`${this.safeZoneApiUrl}/${id}/occupancy`, null, {
+      params: { occupancy: occupancy.toString() }
+    });
+  }
+
+  toggleSafeZoneAvailability(id: number): Observable<SafeZone> {
+    return this.http.put<SafeZone>(`${this.safeZoneApiUrl}/${id}/toggle-availability`, {});
   }
 }
