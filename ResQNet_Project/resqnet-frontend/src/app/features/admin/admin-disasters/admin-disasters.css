@@ -219,6 +219,152 @@
     opacity: 0.92;
 }
 
+/* =========================
+   DISASTER FORM CARD
+========================= */
+
+.form-card {
+    background: rgba(22, 33, 62, 0.96) !important;
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 26px !important;
+    padding: 32px !important;
+    margin-bottom: 28px !important;
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+}
+
+/* ===== TITLE ===== */
+
+.form-card h3 {
+    margin: 0 0 25px;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    padding-left: 18px;
+}
+
+.form-card h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 6px;
+    height: 30px;
+    border-radius: 20px;
+    background: linear-gradient(#2563eb, #7c3aed);
+}
+
+/* ===== GRID ===== */
+
+.form-card > div {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+    gap: 20px !important;
+    margin-top: 20px !important;
+}
+
+/* ===== INPUTS ===== */
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+    width: 100%;
+    padding: 15px 18px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.04) !important;
+    color: white !important;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+/* ===== PLACEHOLDER ===== */
+
+.form-card input::placeholder,
+.form-card textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* ===== FOCUS ===== */
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+    border-color: #3b82f6 !important;
+    background: rgba(255,255,255,0.06) !important;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+}
+
+/* ===== SELECT ===== */
+
+.form-card select {
+    appearance: none;
+    cursor: pointer;
+}
+
+/* ===== OPTIONS ===== */
+
+.form-card option {
+    background: #16213e;
+    color: white;
+}
+
+/* ===== TEXTAREA ===== */
+
+.form-card textarea {
+    min-height: 120px;
+    margin-top: 22px !important;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* ===== BUTTON ===== */
+
+.form-card button {
+    margin-top: 24px !important;
+    background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+    color: white !important;
+    border: none !important;
+    padding: 14px 26px !important;
+    border-radius: 16px !important;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(34,197,94,0.25);
+}
+
+.form-card button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+    .form-card {
+        padding: 22px !important;
+    }
+
+    .form-card h3 {
+        font-size: 24px;
+    }
+
+    .form-card > div {
+        grid-template-columns: 1fr !important;
+    }
+
+    .form-card button {
+        width: 100%;
+    }
+}
+
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 992px) {
