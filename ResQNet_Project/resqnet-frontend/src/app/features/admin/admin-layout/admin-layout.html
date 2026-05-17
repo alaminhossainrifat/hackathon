@@ -7,7 +7,8 @@
       <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">📊
         Dashboard</a>
 
-      <a (click)="showMockAlert('User')" class="nav-item">👥 Users & Volunteers</a>
+      <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">👥 Users & Volunteers</a>
+
       <a (click)="showMockAlert('Disaster')" class="nav-item">🚨 Disasters (Mock)</a>
       <a (click)="showMockAlert('Safe Zone')" class="nav-item">🏠 Safe Zones (Mock)</a>
 
