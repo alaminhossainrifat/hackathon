@@ -17,6 +17,7 @@ import { HomeComponent } from './features/home/home';
 import { AdminLayoutComponent } from './features/admin/admin-layout/admin-layout';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard';
 import { ProfileComponent } from './profile/profile';
+import { adminGuard } from './core/guards/admin-guard';
 
 
 
@@ -27,10 +28,11 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
 
-  // Admin
+  // SECURED ADMIN ROUTE
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [adminGuard], // This guard will block everyone except admin
     children: [
       { path: '', component: AdminDashboardComponent }
     ]
