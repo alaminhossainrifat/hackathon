@@ -1,5 +1,5 @@
 <div class="home">
-  <!-- Hero -->
+  <!-- Hero Section -->
   <div class="hero">
     <div class="hero-content">
       <h1>🚨 ResQNet</h1>
@@ -36,6 +36,83 @@
         <p>{{ f.desc }}</p>
         <span class="lock-badge" *ngIf="!authService.isLoggedIn() && !f.guest">🔒 Login required</span>
       </a>
+    </div>
+  </div>
+
+  <!-- Community & Advanced Modules -->
+  <div class="features-section upcoming-section">
+    <div class="section-badge">✨ Under Development</div>
+    <h2>Community & Institutional Intelligence</h2>
+    <p class="section-sub">ভেরিফায়েড কমিউনিটি ফিড, প্রশাসন ও এনজিও লেভেল অ্যানালিটিক্যাল টুলস</p>
+    
+    <div class="preview-grid">
+      <div *ngFor="let item of communityGovFeatures" 
+           class="preview-card" 
+           (click)="openFeatureModal(item)">
+        <div class="card-top">
+          <span class="preview-badge">Preview</span>
+        </div>
+        <span class="feature-icon">{{ item.icon }}</span>
+        <h3>{{ item.title }}</h3>
+        <p class="preview-tagline">{{ item.tagline }}</p>
+        <div class="card-footer">
+          <span>বিস্তারিত ফিচার দেখুন →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Farmer Panel -->
+  <div class="features-section farmer-section">
+    <div class="section-badge farmer-badge">🌾 Specialized Module</div>
+    <h2>Farmer Panel</h2>
+    <p class="section-sub">স্মার্ট কৃষি পূর্বাভাস ও তাৎক্ষণিক ডিজাস্টার সেফটি অ্যালার্ট</p>
+    
+    <div class="preview-grid farmer-grid">
+      <div *ngFor="let item of farmerFeatures" 
+           class="preview-card farmer-card" 
+           (click)="openFeatureModal(item)">
+        <div class="card-top">
+          <span class="preview-badge farmer-status">Preview</span>
+        </div>
+        <span class="feature-icon">{{ item.icon }}</span>
+        <h3>{{ item.title }}</h3>
+        <p class="preview-tagline">{{ item.tagline }}</p>
+        <div class="card-footer">
+          <span>ফিচার ডিটেইলস দেখুন →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Modal Popup -->
+  <div class="modal-backdrop" *ngIf="selectedFeature" (click)="closeFeatureModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeFeatureModal()">✕</button>
+      
+      <div class="modal-header">
+        <div class="modal-icon">{{ selectedFeature.icon }}</div>
+        <div>
+          <span class="modal-pill">{{ selectedFeature.category }}</span>
+          <h2>{{ selectedFeature.title }}</h2>
+          <p class="modal-sub">{{ selectedFeature.tagline }}</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <h4>📋 অন্তর্ভুক্ত ফিচার ও কার্যপদ্ধতি:</h4>
+        <ul class="feature-points-list">
+          <li *ngFor="let point of selectedFeature.points">
+            <strong *ngIf="point.title">{{ point.title }}: </strong>
+            <span>{{ point.desc }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <span class="dev-tag">⚙️ Module Under Active Development</span>
+        <button class="btn-primary modal-action-btn" (click)="closeFeatureModal()">বন্ধ করুন</button>
+      </div>
     </div>
   </div>
 </div>
